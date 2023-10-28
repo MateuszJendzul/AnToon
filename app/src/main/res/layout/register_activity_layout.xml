@@ -9,7 +9,36 @@
     tools:ignore="HardcodedText, TextContrastCheck, SpeakableTextPresentCheck">
 
     <EditText
-        android:id="@+id/login_activity_layout_password_edit_text_ID"
+        android:id="@+id/register_activity_layout_e_mail_edit_text_ID"
+        android:layout_width="240dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/light_ripple_edit_background"
+        android:gravity="center"
+        android:hint="Email:"
+        android:importantForAutofill="no"
+        android:inputType="text"
+        android:paddingStart="14dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="4dp"
+        android:shadowColor="@color/transparent"
+        android:shadowDx="10"
+        android:shadowRadius="1"
+        android:singleLine="true"
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/text_color"
+        android:textSize="22sp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toTopOf="@+id/register_activity_layout_password_edit_text_ID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/register_activity_layout_password_edit_text_ID"
         android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginBottom="40dp"
@@ -30,7 +59,7 @@
         android:textColorHint="@color/text_color"
         android:textSize="22sp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@+id/login_activity_layout_login_button_ID"
+        app:layout_constraintBottom_toTopOf="@+id/register_activity_layout_login_button_ID"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +67,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <EditText
-        android:id="@+id/login_activity_layout_name_edit_text_ID"
+        android:id="@+id/register_activity_layout_name_edit_text_ID"
         android:layout_width="240dp"
         android:layout_height="48dp"
         android:layout_marginBottom="20dp"
@@ -59,7 +88,7 @@
         android:textColorHint="@color/text_color"
         android:textSize="22sp"
         android:textStyle="normal"
-        app:layout_constraintBottom_toTopOf="@+id/login_activity_layout_password_edit_text_ID"
+        app:layout_constraintBottom_toTopOf="@+id/register_activity_layout_e_mail_edit_text_ID"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -67,14 +96,14 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_activity_layout_login_button_ID"
-        android:layout_width="120dp"
+        android:id="@+id/register_activity_layout_login_button_ID"
+        android:layout_width="140dp"
         android:layout_height="48dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="220dp"
         android:background="@drawable/circle_button_background"
         android:gravity="center"
-        android:text="Login"
+        android:text="Register"
         android:textColor="@color/darker_text_color"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -85,7 +114,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_activity_layout_back_button_ID"
+        android:id="@+id/register_activity_layout_back_button_ID"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="10dp"
@@ -101,7 +130,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/login_activity_layout_show_password_button_ID"
+        android:id="@+id/register_activity_layout_show_password_button_ID"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="10dp"
@@ -112,8 +141,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/login_activity_layout_password_edit_text_ID"
-        app:layout_constraintTop_toTopOf="@+id/login_activity_layout_password_edit_text_ID"
+        app:layout_constraintStart_toEndOf="@+id/register_activity_layout_password_edit_text_ID"
+        app:layout_constraintTop_toTopOf="@+id/register_activity_layout_password_edit_text_ID"
         app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

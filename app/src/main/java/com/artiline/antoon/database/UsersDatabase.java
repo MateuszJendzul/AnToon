@@ -7,11 +7,16 @@ import java.util.ArrayList;
 public class UsersDatabase {
     private static final String TAG = "UsersDatabase";
     private static ArrayList<User> usersList = new ArrayList<>();
-    private static ArrayList<Integer> deletedUsersIDs = new ArrayList<>();
+    private static ArrayList<Integer> deletedUsersID = new ArrayList<>();
 
-    public static ArrayList<User> getUsersList() {
+    public ArrayList<User> getUsersList() {
         Log.i(TAG, "getUsersList:");
         return usersList;
+    }
+
+    public ArrayList<Integer> getDeletedUsersID() {
+        Log.i(TAG, "getDeletedUsersID:");
+        return deletedUsersID;
     }
 
     public User createUser(String name, String eMail, String password) {

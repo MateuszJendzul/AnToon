@@ -6,16 +6,18 @@ import androidx.annotation.NonNull;
 
 import com.artiline.antoon.exceptions.IDLessThanOneException;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
     private static final String TAG = "UsersDatabase";
 
     public User() {
         Log.i(TAG, "User No Args Constructor:");
     }
 
-    public User(String name, String eMail, String password) throws IDLessThanOneException {
+    public User(String name, String e_mail, String password) throws IDLessThanOneException {
         this.name = name;
-        this.eMail = eMail;
+        this.e_mail = e_mail;
         this.password = password;
 
         try {
@@ -32,7 +34,7 @@ public class User {
     private static int currentListID = 0;
     private int userID;
     private String name;
-    private String eMail;
+    private String e_mail;
     private String password;
 
     public int getUserID() {
@@ -60,11 +62,11 @@ public class User {
     }
 
     public String getEMail() {
-        return eMail;
+        return e_mail;
     }
 
     public void setEMail(String eMail) {
-        this.eMail = eMail;
+        this.e_mail = eMail;
     }
 
     public String getPassword() {

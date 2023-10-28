@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     android:background="@color/gray"
     android:theme="@style/Theme.AnToon.NoActionBar"
-    tools:ignore="HardcodedText, TextContrastCheck" >
+    tools:ignore="HardcodedText, TextContrastCheck">
 
     <TextView
-        android:id="@+id/main_activity_layout_welcome_text_ID"
+        android:id="@+id/home_activity_layout_welcome_text_ID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
@@ -20,11 +20,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
- />
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/main_activity_layout_login_button_ID"
+        android:id="@+id/home_activity_layout_login_button_ID"
         android:layout_width="120dp"
         android:layout_height="48dp"
         android:layout_marginBottom="220dp"
@@ -38,6 +37,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_activity_layout_welcome_text_ID"
+        app:layout_constraintTop_toBottomOf="@+id/home_activity_layout_welcome_text_ID"
         app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
