@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_layout);
+        setContentView(R.layout.login_activity_layout);
         Log.d(TAG, "onCreate: LoginActivity");
 
         EditText login_activity_layout_name_edit_text = findViewById(R.id.login_activity_layout_name_edit_text_ID);
@@ -45,19 +45,14 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "List of Users is empty!",
                             Toast.LENGTH_SHORT).show();
 
-                } else if (usersDatabase.getUsersList().size() > 0) {
+                } else {
                     Intent login_activity_layout_login_button_intent = new Intent(
                             LoginActivity.this, MainPageActivity.class);
+                    User login_activity_user = loggedUser(user_name, user_password);
+                    login_activity_layout_login_button_intent.putExtra(
+                            "login_activity_user_extra", login_activity_user);
+                    startActivity(login_activity_layout_login_button_intent);
 
-                    User user = loggedUser(user_name, user_password);
-                    if (user != null) {
-                        login_activity_layout_login_button_intent.putExtra(
-                                "loggedUser", user);
-                        startActivity(login_activity_layout_login_button_intent);
-                    } else {
-                        Toast.makeText(LoginActivity.this, "There is no such user!",
-                                Toast.LENGTH_SHORT).show();
-                    }
                 }
 
             } else {
@@ -95,9 +90,14 @@ public class LoginActivity extends AppCompatActivity {
             if (userName.equals(usersDatabase.getUsersList().get(x).getName())) {
                 if (userPassword.equals(usersDatabase.getUsersList().get(x).getPassword())) {
                     return usersDatabase.getUsersList().get(x);
+                } else {
+                    Toast.makeText(LoginActivity.this, "Passwords doesn't match!!",
+                            Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(LoginActivity.this, "There is no user with such name!",
+                        Toast.LENGTH_SHORT).show();
             }
-            //TODO change so app checks name and password separately
         }
         return null;
     }

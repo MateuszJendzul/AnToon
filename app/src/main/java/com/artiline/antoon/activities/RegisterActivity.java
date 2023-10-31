@@ -43,12 +43,14 @@ public class RegisterActivity extends AppCompatActivity {
             if (!register_activity_layout_name_edit_text.getText().toString().isEmpty()
                     && !register_activity_layout_password_edit_text.getText().toString().isEmpty()
                     && !register_activity_layout_e_mail_edit_text.getText().toString().isEmpty()) {
-                User user = new User(user_name, user_e_mail, user_password);
-                users_database.addUserToList(user);
+                User register_activity_user = new User(user_name, user_e_mail, user_password);
+                users_database.addUserToList(register_activity_user);
                 Toast.makeText(RegisterActivity.this, "User " + user_name + " created",
                         Toast.LENGTH_SHORT).show();
                 Intent register_activity_layout_login_button_intent = new Intent(
                         RegisterActivity.this, MainPageActivity.class);
+                register_activity_layout_login_button_intent.putExtra(
+                        "register_activity_user_extra", register_activity_user);
                 startActivity(register_activity_layout_login_button_intent);
 
             } else {

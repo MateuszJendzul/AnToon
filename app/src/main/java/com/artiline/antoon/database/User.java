@@ -21,14 +21,15 @@ public class User implements Serializable {
         this.password = password;
 
         try {
+            //TODO fix custom exceptions
             this.userID = currentListID;
-        Log.i(TAG, "User: Constructor: " + "ID: " + getID() + " Name: " + getName() +
-                " Password: " + getPassword() + " Email: " + getEMail());
-            currentListID++;
+            Log.i(TAG, "User: Constructor: " + "ID: " + getID() + " Name: " + getName() +
+                    " Password: " + getPassword() + " Email: " + getEMail());
         } catch (Exception e) {
             throw new IDLessThanOneException(
                     "User ID cannot be less than 1! Detected ID: " + currentListID, new RuntimeException());
         }
+        currentListID++;
     }
 
     private static int currentListID = 0;

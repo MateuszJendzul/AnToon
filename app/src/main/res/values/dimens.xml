@@ -1,3 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="MediumButtonHeight">48dp</dimen>
+    <dimen name="MediumButtonWidth">120dp</dimen>
+    <dimen name="SmallButtonHeight">48dp</dimen>
+    <dimen name="SmallButtonWidth">60dp</dimen>
 </resources>

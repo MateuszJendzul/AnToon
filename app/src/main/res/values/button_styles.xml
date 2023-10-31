@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SmallButtonAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/airstrike</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@drawable/circle_button_background</item>
+        <item name="android:textColor">@color/darker_text_color</item>
+    </style>
+
+    <style name="MediumButtonAppearance" parent="TextAppearance.AppCompat">
+        <item name="fontFamily">@font/airstrike</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_width">120dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@drawable/circle_button_background</item>
+        <item name="android:textColor">@color/darker_text_color</item>
+    </style>
+
+    <style name="BackButtonAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/airstrike</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">50dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@drawable/ic_arrow_left</item>
+        <item name="android:foreground">@drawable/light_ripple_button_background</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
+</resources>

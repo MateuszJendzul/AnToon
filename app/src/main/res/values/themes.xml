@@ -2,6 +2,9 @@
     <!-- Base application theme. -->
     <style name="Theme.AnToon.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
+        <item name="windowActionBar">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:background">@drawable/antoon_wallpaper</item>
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/gray</item>
         <item name="colorOnPrimary">@color/gray</item>
@@ -10,16 +13,8 @@
         <item name="colorSecondaryVariant">@color/text_color</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:statusBarColor">@color/gray</item>
         <!-- Customize your theme here. -->
-    </style>
-
-    <style name="TextInputLayoutTheme" parent="Widget.Design.TextInputLayout">
-        <item name="colorOnSurface">@android:color/transparent</item>
-    </style>
-
-    <style name="MyTextAppearance" parent="TextAppearance.AppCompat">
-        <item name="fontFamily">@font/airstrike</item>
     </style>
 
 </resources>

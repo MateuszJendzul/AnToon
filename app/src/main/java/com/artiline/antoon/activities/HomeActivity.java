@@ -28,7 +28,6 @@ public class HomeActivity extends AppCompatActivity {
 
         String text_1_text_string = "AnToon";
         home_activity_layout_welcome_text.setText(text_1_text_string);
-        home_activity_layout_welcome_text.setTextSize(42);
 
         if (!adminCreated) {
             createAdmin();
@@ -46,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void createAdmin() {
         users_database.addUserToList(users_database.createUser(
-                "Admin", "admin@admin.com", "admin"));
+                "admin", "admin@admin.com", "admin"));
     }
 
 }

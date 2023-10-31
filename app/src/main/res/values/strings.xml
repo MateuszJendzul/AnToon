@@ -7,6 +7,16 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <!-- My custom Strings -->
+    <string name="home_activity_layout_welcome_text">AnToon</string>
+    <string name="password_edit_text">Password:</string>
+    <string name="password_auto_fill_hints_edit_text">Password</string>
+    <string name="login_text">Login</string>
+    <string name="login_edit_text">Login:</string>
+    <string name="login_auto_fill_hints_edit_text">Login</string>
+    <string name="email_edit_text">Email:</string>
+    <string name="email_auto_fill_hints_edit_text">Email</string>
+
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
