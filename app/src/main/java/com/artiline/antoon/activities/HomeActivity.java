@@ -10,10 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.artiline.antoon.R;
-import com.artiline.antoon.database.UsersDatabase;
+import com.artiline.antoon.database.UsersInterface;
 
 public class HomeActivity extends AppCompatActivity {
-    UsersDatabase users_database = new UsersDatabase();
+    UsersInterface users_database = new UsersInterface();
     private static final String TAG = "HomeActivity";
     private static boolean adminCreated = false;
 

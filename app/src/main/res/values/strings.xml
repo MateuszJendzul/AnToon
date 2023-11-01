@@ -16,6 +16,7 @@
     <string name="login_auto_fill_hints_edit_text">Login</string>
     <string name="email_edit_text">Email:</string>
     <string name="email_auto_fill_hints_edit_text">Email</string>
+    <string name="font"></string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

@@ -19,24 +19,25 @@ public class MainPageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_page_acivity_layout);
         Log.d(TAG, "onCreate: MainPageActivity");
 
         TextView main_page_activity_layout_user_name_text = findViewById(R.id.main_page_activity_layout_user_name_text_ID);
         Button main_page_activity_layout_back_button = findViewById(R.id.main_page_activity_layout_back_button_ID);
 
+        User user = null;
+        String main_page_activity_layout_user_name_text_string = null;
         Intent main_page_activity_intent = getIntent();
-        User registered_user = (User) main_page_activity_intent.getSerializableExtra(
-                "register_activity_user_extra");
-        User logged_user = (User) main_page_activity_intent.getSerializableExtra(
-                "login_activity_user_extra");
 
-        if (registered_user != null) {
-            main_page_activity_layout_user_name_text.setText(registered_user.getName());
-        } else if (logged_user != null) {
-            main_page_activity_layout_user_name_text.setText(logged_user.getName());
-        } else {
-            Toast.makeText(MainPageActivity.this, "ERROR: User not found!", Toast.LENGTH_LONG).show();
+        if (main_page_activity_intent.hasExtra(LoginActivity.LOGIN_ACTIVITY_EXTRA)) {
+            user = main_page_activity_intent.getParcelableExtra(LoginActivity.LOGIN_ACTIVITY_EXTRA);
+
+        } else if (main_page_activity_intent.hasExtra(RegisterActivity.REGISTER_ACTIVITY_EXTRA)) {
+            user = main_page_activity_intent.getParcelableExtra(RegisterActivity.REGISTER_ACTIVITY_EXTRA);
         }
+
+        main_page_activity_layout_user_name_text_string = user != null ? user.getName() : "null";
+        main_page_activity_layout_user_name_text.setText(main_page_activity_layout_user_name_text_string);
 
         main_page_activity_layout_back_button.setOnClickListener(view -> {
             Log.d(TAG, "onClick: main_page_activity_layout_back_button");

@@ -13,11 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.artiline.antoon.R;
 import com.artiline.antoon.database.User;
-import com.artiline.antoon.database.UsersDatabase;
+import com.artiline.antoon.database.UsersInterface;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
-    UsersDatabase usersDatabase = new UsersDatabase();
+    public static final String LOGIN_ACTIVITY_EXTRA = "login_activity_extra";
+    UsersInterface usersDatabase = new UsersInterface();
     private boolean password_visible = false;
     private boolean password_hidden = true;
 
@@ -50,9 +51,8 @@ public class LoginActivity extends AppCompatActivity {
                             LoginActivity.this, MainPageActivity.class);
                     User login_activity_user = loggedUser(user_name, user_password);
                     login_activity_layout_login_button_intent.putExtra(
-                            "login_activity_user_extra", login_activity_user);
+                            LOGIN_ACTIVITY_EXTRA, login_activity_user);
                     startActivity(login_activity_layout_login_button_intent);
-
                 }
 
             } else {
@@ -94,9 +94,6 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Passwords doesn't match!!",
                             Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                Toast.makeText(LoginActivity.this, "There is no user with such name!",
-                        Toast.LENGTH_SHORT).show();
             }
         }
         return null;

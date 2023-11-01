@@ -2,7 +2,7 @@
 <resources>
 
     <style name="SmallEditTextAppearance" parent="TextAppearance.AppCompat">
-        <item name="android:fontFamily">@font/airstrike</item>
+        <item name="android:fontFamily">@font/komtxtb</item>
         <item name="android:textSize">12sp</item>
         <item name="android:layout_width">120dp</item>
         <item name="android:layout_height">48dp</item>
@@ -20,7 +20,7 @@
     </style>
 
     <style name="MediumEditTextAppearance" parent="TextAppearance.AppCompat">
-        <item name="android:fontFamily">@font/airstrike</item>
+        <item name="android:fontFamily">@font/komtxtb</item>
         <item name="android:textSize">24sp</item>
         <item name="android:layout_width">240dp</item>
         <item name="android:layout_height">48dp</item>
@@ -38,7 +38,7 @@
     </style>
 
     <style name="LargeEditTextAppearance" parent="TextAppearance.AppCompat">
-        <item name="android:fontFamily">@font/airstrike</item>
+        <item name="android:fontFamily">@font/komtxtb</item>
         <item name="android:textSize">62sp</item>
         <item name="android:layout_width">360dp</item>
         <item name="android:layout_height">48dp</item>
@@ -56,7 +56,7 @@
     </style>
 
     <style name="PasswordEditTextAppearance" parent="TextAppearance.AppCompat">
-        <item name="android:fontFamily">@font/airstrike</item>
+        <item name="android:fontFamily">@font/komtxtb</item>
         <item name="android:textSize">24sp</item>
         <item name="android:layout_width">240dp</item>
         <item name="android:layout_height">48dp</item>
@@ -77,7 +77,7 @@
     </style>
 
     <style name="LoginEditTextAppearance" parent="TextAppearance.AppCompat">
-        <item name="android:fontFamily">@font/airstrike</item>
+        <item name="android:fontFamily">@font/komtxtb</item>
         <item name="android:textSize">24sp</item>
         <item name="android:layout_width">240dp</item>
         <item name="android:layout_height">48dp</item>
@@ -98,7 +98,7 @@
     </style>
 
     <style name="EmailEditTextAppearance" parent="TextAppearance.AppCompat">
-        <item name="android:fontFamily">@font/airstrike</item>
+        <item name="android:fontFamily">@font/komtxtb</item>
         <item name="android:textSize">24sp</item>
         <item name="android:layout_width">240dp</item>
         <item name="android:layout_height">48dp</item>
@@ -115,7 +115,7 @@
         <item name="android:importantForAutofill">yes</item>
         <item name="android:autofillHints">@string/email_auto_fill_hints_edit_text</item>
         <item name="android:hint">@string/email_edit_text</item>
-        <item name="android:inputType">text</item>
+        <item name="android:inputType">textEmailAddress</item>
     </style>
 
 </resources>

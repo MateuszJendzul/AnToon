@@ -13,13 +13,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.artiline.antoon.R;
 import com.artiline.antoon.database.User;
-import com.artiline.antoon.database.UsersDatabase;
+import com.artiline.antoon.database.UsersInterface;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity";
+    public static final String REGISTER_ACTIVITY_EXTRA = "register_activity_extra";
     private boolean password_visible = false;
     private boolean password_hidden = true;
-    UsersDatabase users_database = new UsersDatabase();
+    UsersInterface users_database = new UsersInterface();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         EditText register_activity_layout_name_edit_text = findViewById(R.id.register_activity_layout_name_edit_text_ID);
         EditText register_activity_layout_password_edit_text = findViewById(R.id.register_activity_layout_password_edit_text_ID);
-        EditText register_activity_layout_e_mail_edit_text = findViewById(R.id.register_activity_layout_e_mail_edit_text_ID);
+        EditText register_activity_layout_email_edit_text = findViewById(R.id.register_activity_layout_email_edit_text_ID);
         Button register_activity_layout_back_button = findViewById(R.id.register_activity_layout_back_button_ID);
         Button register_activity_layout_login_button = findViewById(R.id.register_activity_layout_login_button_ID);
         Button register_activity_layout_show_password_button = findViewById(R.id.register_activity_layout_show_password_button_ID);
@@ -38,19 +39,17 @@ public class RegisterActivity extends AppCompatActivity {
             Log.d(TAG, "onClick: register_activity_layout_login_button");
             String user_name = register_activity_layout_name_edit_text.getText().toString();
             String user_password = register_activity_layout_password_edit_text.getText().toString();
-            String user_e_mail = register_activity_layout_e_mail_edit_text.getText().toString();
+            String user_email = register_activity_layout_email_edit_text.getText().toString();
 
             if (!register_activity_layout_name_edit_text.getText().toString().isEmpty()
                     && !register_activity_layout_password_edit_text.getText().toString().isEmpty()
-                    && !register_activity_layout_e_mail_edit_text.getText().toString().isEmpty()) {
-                User register_activity_user = new User(user_name, user_e_mail, user_password);
+                    && !register_activity_layout_email_edit_text.getText().toString().isEmpty()) {
+                User register_activity_user = new User(user_name, user_email, user_password);
                 users_database.addUserToList(register_activity_user);
-                Toast.makeText(RegisterActivity.this, "User " + user_name + " created",
-                        Toast.LENGTH_SHORT).show();
                 Intent register_activity_layout_login_button_intent = new Intent(
                         RegisterActivity.this, MainPageActivity.class);
                 register_activity_layout_login_button_intent.putExtra(
-                        "register_activity_user_extra", register_activity_user);
+                        REGISTER_ACTIVITY_EXTRA, register_activity_user);
                 startActivity(register_activity_layout_login_button_intent);
 
             } else {

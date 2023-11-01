@@ -4,8 +4,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-public class UsersDatabase {
-    private static final String TAG = "UsersDatabase";
+public class UsersInterface {
+    private static final String TAG = "UsersInterface";
     private static ArrayList<User> usersList = new ArrayList<>();
     private static ArrayList<Integer> deletedUsersID = new ArrayList<>();
 

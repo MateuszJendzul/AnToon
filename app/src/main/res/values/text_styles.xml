@@ -3,7 +3,7 @@
 
     <style name="SmallTextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:background">@color/transparent</item>
-        <item name="android:fontFamily">@font/airstrike</item>
+        <item name="android:fontFamily">@font/komtxtb</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">12sp</item>
@@ -19,7 +19,7 @@
 
     <style name="MediumTextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:background">@color/transparent</item>
-        <item name="android:fontFamily">@font/airstrike</item>
+        <item name="android:fontFamily">@font/komtxtb</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">24sp</item>
@@ -35,7 +35,7 @@
 
     <style name="LargeTextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:background">@color/transparent</item>
-        <item name="android:fontFamily">@font/airstrike</item>
+        <item name="android:fontFamily">@font/komtxtb</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">46sp</item>
