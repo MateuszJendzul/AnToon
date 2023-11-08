@@ -2,7 +2,7 @@
 <resources>
 
     <style name="SmallButtonAppearance" parent="TextAppearance.AppCompat">
-        <item name="android:fontFamily">@font/komtxtb</item>
+        <item name="android:fontFamily">@font/komtxtb_sans</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_width">60dp</item>
         <item name="android:textSize">12sp</item>
@@ -13,7 +13,7 @@
     </style>
 
     <style name="MediumButtonAppearance" parent="TextAppearance.AppCompat">
-        <item name="fontFamily">@font/komtxtb</item>
+        <item name="fontFamily">@font/komtxtb_sans</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:layout_width">120dp</item>
         <item name="android:textSize">20sp</item>

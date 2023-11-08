@@ -26,7 +26,7 @@ public class LoginRegisterActivity extends AppCompatActivity {
         Button login_register_activity_layout_login_button = findViewById(R.id.login_register_activity_layout_login_button_ID);
         Button login_register_activity_layout_back_button = findViewById(R.id.login_register_layout_back_button_ID);
 
-        String text_1_text_string = "Login into existing\nor register new profile";
+        String text_1_text_string = "OR";
         login_register_layout_text.setText(text_1_text_string);
         login_register_layout_text.setTextSize(26);
 

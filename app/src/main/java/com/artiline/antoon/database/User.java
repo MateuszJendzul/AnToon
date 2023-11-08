@@ -8,8 +8,6 @@ import androidx.annotation.NonNull;
 
 import com.artiline.antoon.exceptions.IDLessThanOneException;
 
-import java.io.Serializable;
-
 public class User implements Parcelable {
     private static final String TAG = "UsersDatabase";
 
@@ -20,27 +18,27 @@ public class User implements Parcelable {
     public User(String name, String e_mail, String password) throws IDLessThanOneException {
         Log.i(TAG, "User: Constructor: " + "ID: " + getID() + " Name: " + getName() +
                 " Password: " + getPassword() + " Email: " + getEMail());
-        this.userID = currentListID;
+        this.user_ID = current_list_ID;
         this.name = name;
-        this.e_mail = e_mail;
+        this.email = e_mail;
         this.password = password;
-        currentListID++;
+        current_list_ID++;
     }
 
     // implementing parcelable interface
     // write and read in exactly same order
     public User(Parcel in) {
-        userID = in.readInt();
+        user_ID = in.readInt();
         name = in.readString();
-        e_mail = in.readString();
+        email = in.readString();
         password = in.readString();
     }
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeInt(userID);
+        dest.writeInt(user_ID);
         dest.writeString(name);
-        dest.writeString(e_mail);
+        dest.writeString(email);
         dest.writeString(password);
     }
 
@@ -68,26 +66,26 @@ public class User implements Parcelable {
                 + " Email: " + getEMail();
     }
 
-    private static int currentListID = 0;
-    private int userID;
+    private static int current_list_ID = 0;
+    private int user_ID;
     private String name;
-    private String e_mail;
+    private String email;
     private String password;
 
-    public int getUserID() {
-        return userID;
+    public int getUser_ID() {
+        return user_ID;
     }
 
-    public void setUserID(int userID) {
-        this.userID = userID;
+    public void setUser_ID(int user_ID) {
+        this.user_ID = user_ID;
     }
 
     private void setID(int IDNumber) {
-        currentListID = IDNumber;
+        current_list_ID = IDNumber;
     }
 
     private int getID() {
-        return userID;
+        return user_ID;
     }
 
     public String getName() {
@@ -99,11 +97,11 @@ public class User implements Parcelable {
     }
 
     public String getEMail() {
-        return e_mail;
+        return email;
     }
 
     public void setEMail(String eMail) {
-        this.e_mail = eMail;
+        this.email = eMail;
     }
 
     public String getPassword() {

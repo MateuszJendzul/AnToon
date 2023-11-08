@@ -4,7 +4,8 @@
         <!-- Primary brand color. -->
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
-        <item name="android:background">@drawable/antoon_wallpaper</item>
+        <item name="android:itemBackground">@color/gray</item>
+        <item name="android:windowBackground">@drawable/antoon_wallpaper</item>
         <item name="colorPrimary">@color/white</item>
         <item name="colorPrimaryVariant">@color/gray</item>
         <item name="colorOnPrimary">@color/gray</item>

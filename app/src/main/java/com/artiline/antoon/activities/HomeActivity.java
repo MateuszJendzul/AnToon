@@ -1,6 +1,7 @@
 package com.artiline.antoon.activities;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.artiline.antoon.R;
 import com.artiline.antoon.database.UsersInterface;
@@ -15,7 +17,7 @@ import com.artiline.antoon.database.UsersInterface;
 public class HomeActivity extends AppCompatActivity {
     UsersInterface users_database = new UsersInterface();
     private static final String TAG = "HomeActivity";
-    private static boolean adminCreated = false;
+    private static boolean admin_created = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,15 +31,15 @@ public class HomeActivity extends AppCompatActivity {
         String text_1_text_string = "AnToon";
         home_activity_layout_welcome_text.setText(text_1_text_string);
 
-        if (!adminCreated) {
+        if (!admin_created) {
             createAdmin();
-            adminCreated = true;
+            admin_created = true;
         }
 
         home_activity_layout_login_button.setOnClickListener(view -> {
             Log.d(TAG, "onClick: home_activity_layout_login_button");
-            Intent home_activity_layout_login_button_intent = new Intent(HomeActivity.this,
-                    LoginRegisterActivity.class);
+            Intent home_activity_layout_login_button_intent = new Intent(
+                    this, LoginRegisterActivity.class);
             startActivity(home_activity_layout_login_button_intent);
         });
 
@@ -47,5 +49,4 @@ public class HomeActivity extends AppCompatActivity {
         users_database.addUserToList(users_database.createUser(
                 "admin", "admin@admin.com", "admin"));
     }
-
 }

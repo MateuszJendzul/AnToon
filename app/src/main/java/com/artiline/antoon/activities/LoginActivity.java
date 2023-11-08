@@ -18,7 +18,7 @@ import com.artiline.antoon.database.UsersInterface;
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     public static final String LOGIN_ACTIVITY_EXTRA = "login_activity_extra";
-    UsersInterface usersDatabase = new UsersInterface();
+    UsersInterface users_interface = new UsersInterface();
     private boolean password_visible = false;
     private boolean password_hidden = true;
 
@@ -42,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
             if (!login_activity_layout_name_edit_text.getText().toString().isEmpty()
                     && !login_activity_layout_password_edit_text.getText().toString().isEmpty()) {
 
-                if (usersDatabase.getUsersList().isEmpty()) {
+                if (users_interface.getUsersList().isEmpty()) {
                     Toast.makeText(LoginActivity.this, "List of Users is empty!",
                             Toast.LENGTH_SHORT).show();
 
@@ -50,9 +50,11 @@ public class LoginActivity extends AppCompatActivity {
                     Intent login_activity_layout_login_button_intent = new Intent(
                             LoginActivity.this, MainPageActivity.class);
                     User login_activity_user = loggedUser(user_name, user_password);
-                    login_activity_layout_login_button_intent.putExtra(
-                            LOGIN_ACTIVITY_EXTRA, login_activity_user);
-                    startActivity(login_activity_layout_login_button_intent);
+                    if (login_activity_user != null) {
+                        login_activity_layout_login_button_intent.putExtra(
+                                LOGIN_ACTIVITY_EXTRA, login_activity_user);
+                        startActivity(login_activity_layout_login_button_intent);
+                    }
                 }
 
             } else {
@@ -86,14 +88,17 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public User loggedUser(String userName, String userPassword) {
-        for (int x = 0; x < usersDatabase.getUsersList().size(); x++) {
-            if (userName.equals(usersDatabase.getUsersList().get(x).getName())) {
-                if (userPassword.equals(usersDatabase.getUsersList().get(x).getPassword())) {
-                    return usersDatabase.getUsersList().get(x);
+        for (int x = 0; x < users_interface.getUsersList().size(); x++) {
+            if (userName.equals(users_interface.getUsersList().get(x).getName())) {
+                if (userPassword.equals(users_interface.getUsersList().get(x).getPassword())) {
+                    return users_interface.getUsersList().get(x);
                 } else {
-                    Toast.makeText(LoginActivity.this, "Passwords doesn't match!!",
+                    Toast.makeText(LoginActivity.this, "Passwords doesn't match!",
                             Toast.LENGTH_SHORT).show();
                 }
+            } else {
+                Toast.makeText(LoginActivity.this, "User not found!",
+                        Toast.LENGTH_SHORT).show();
             }
         }
         return null;
