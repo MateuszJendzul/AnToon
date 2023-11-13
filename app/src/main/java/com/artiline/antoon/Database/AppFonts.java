@@ -1,11 +1,22 @@
-package com.artiline.antoon.database;
+package com.artiline.antoon.activities.Database;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.nfc.Tag;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.artiline.antoon.activities.MainPageActivity;
 
 /**
  * @noinspection FieldMayBeFinal
  */
 public class AppFonts extends AppCompatActivity {
+    private static final String TAG = "AppFonts";
 
     // define new font here, to use it later
     // (as one of available fonts) to compare it with string parameter of changeFont(font)
