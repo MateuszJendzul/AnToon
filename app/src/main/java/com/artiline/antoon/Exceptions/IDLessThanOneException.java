@@ -1,4 +1,4 @@
-package com.artiline.antoon.exceptions;
+package com.artiline.antoon.Exceptions;
 
 public class IDLessThanOneException extends RuntimeException {
 

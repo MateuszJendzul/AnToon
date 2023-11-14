@@ -1,4 +1,4 @@
-package com.artiline.antoon.activities;
+package com.artiline.antoon.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.artiline.antoon.R;
-import com.artiline.antoon.database.UsersInterface;
 
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";

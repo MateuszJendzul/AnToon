@@ -1,4 +1,4 @@
-package com.artiline.antoon.activities.Database;
+package com.artiline.antoon.Database;
 
 import android.graphics.Paint;
 import android.graphics.Typeface;

@@ -1,4 +1,4 @@
-package com.artiline.antoon.activities.Models;
+package com.artiline.antoon.Models;
 
 import android.util.Log;
 
@@ -7,6 +7,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.artiline.antoon.Database.PrimaryKeyGenerator;
 import com.artiline.antoon.Exceptions.IDLessThanOneException;
 
 import java.io.Serializable;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @Entity(tableName = "User")
 public class User implements Serializable {
     private static final String TAG = "UsersDatabase";
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     private int ID = 0;
     @ColumnInfo(name = "name")
     private String name = "Name";
@@ -70,6 +71,7 @@ public class User implements Serializable {
     }
 
     public User(String name, String email, String password) {
+        this.ID = PrimaryKeyGenerator.generatePrimaryKey();
         this.name = name;
         this.email = email;
         this.password = password;

@@ -1,13 +1,11 @@
-package com.artiline.antoon.activities.Database;
-
-import static androidx.room.OnConflictStrategy.REPLACE;
+package com.artiline.antoon.Database;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.artiline.antoon.activities.Models.User;
+import com.artiline.antoon.Models.User;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.artiline.antoon.activities.Database;
+package com.artiline.antoon.Database;
 
 
 import android.content.Context;
@@ -7,7 +7,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import com.artiline.antoon.activities.Models.User;
+import com.artiline.antoon.Models.User;
 
 @Database(entities = {User.class}, version = 1, exportSchema = false)
 public abstract class UserRoomDB extends RoomDatabase {

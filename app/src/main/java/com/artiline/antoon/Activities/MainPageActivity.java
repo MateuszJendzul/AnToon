@@ -1,4 +1,4 @@
-package com.artiline.antoon.activities;
+package com.artiline.antoon.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,70 +20,60 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.artiline.antoon.R;
-import com.artiline.antoon.database.AppFonts;
-import com.artiline.antoon.database.CustomTypeFaceSpan;
-import com.artiline.antoon.database.User;
+import com.artiline.antoon.Database.UserDAO;
+import com.artiline.antoon.Database.UserRoomDB;
+import com.artiline.antoon.Database.AppFonts;
+import com.artiline.antoon.Database.CustomTypeFaceSpan;
+import com.artiline.antoon.Models.User;
 
 public class MainPageActivity extends AppCompatActivity {
     private static final String TAG = "MainPageActivity";
-    TextView main_page_activity_layout_user_name_text;
-    Button main_page_activity_layout_menu_button;
-    private static boolean loggedON = false;
-
-    // string used in SharedPreferences and ParcelableExtra as name of extras
+    // used in SharedPreferences and ParcelableExtra as name of extras
     public static final String MAIN_PAGE_ACTIVITY_EXTRA = "mainPageActivityExtra";
+    public static final String LOGGED_ON_BOOL_EXTRA = "loggedOn";
+    private static final String DEFAULT_FONT_EXTRA = "defaultFontExtra";
+    TextView mainPageActivityLayoutUserNameText;
+    Button mainPageActivityLayoutMenuButton;
     // declare SP
-    SharedPreferences mainPageActivitySP;
-    SharedPreferences.Editor mainPageActivitySPEditor;
-    SharedPreferences mainPageActivitySPReceiver;
+    SharedPreferences mainPageActivitySP, mainPageActivitySPReceiver, loginActivitySPReceiver;
+    UserDAO userDAO;
+    User user;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page_acivity_layout);
-        Log.d(TAG, "onCreate: MainPageActivity");
+        Log.i(TAG, "onCreate: MainPageActivity");
+        userDAO = UserRoomDB.getInstance(this).usersDAO();
 
         // initialize SP
         mainPageActivitySP = getSharedPreferences(MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
-        mainPageActivitySPEditor = mainPageActivitySP.edit();
         mainPageActivitySPReceiver = getApplicationContext().getSharedPreferences(
-                "appFontsPrefs", Context.MODE_PRIVATE);
+                MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
+        loginActivitySPReceiver = getApplicationContext().getSharedPreferences(
+                LoginActivity.LOGIN_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
 
-        // get
-        main_page_activity_layout_user_name_text = findViewById(R.id.main_page_activity_layout_user_name_text_ID);
-        main_page_activity_layout_menu_button = findViewById(R.id.main_page_activity_layout_menu_button_ID);
-        changeFont(AppFonts.appFontString);
-        loggedON = true;
-        putExtraOnLoggedOn(true);
-        //TODO come up with a method to start application from MainPageActivity with saved user data
-        //  from StartActivity
+        // get SP
+        mainPageActivityLayoutUserNameText = findViewById(R.id.main_page_activity_layout_user_name_text_ID);
+        mainPageActivityLayoutMenuButton = findViewById(R.id.main_page_activity_layout_menu_button_ID);
 
-        User user = null;
-        String main_page_activity_layout_user_name_text_string = null;
-        Intent main_page_activity_intent = getIntent();
+        int loggedUserID = loginActivitySPReceiver.getInt("loggedUserID", 0);
+        Log.d(TAG, "loginActivitySPReceiver.getInt(\"loggedUserID\") = " + loggedUserID);
+        user = userDAO.getAll().get(loggedUserID);
+        mainPageActivityLayoutUserNameText.setText(user.getName());
 
-        // check if this activity has extra carried over from LoginActivity
-        if (main_page_activity_intent.hasExtra(LoginActivity.LOGIN_ACTIVITY_EXTRA)) {
-            user = main_page_activity_intent.getParcelableExtra(LoginActivity.LOGIN_ACTIVITY_EXTRA);
+        String defaultFont = mainPageActivitySPReceiver.getString(DEFAULT_FONT_EXTRA, AppFonts.KOMTXTB_FONT);
+        changeFont(defaultFont);
+        mainPageActivitySP.edit().putBoolean(LOGGED_ON_BOOL_EXTRA, true).apply();
 
-        } else if (main_page_activity_intent.hasExtra(RegisterActivity.REGISTER_ACTIVITY_EXTRA)) {
-            user = main_page_activity_intent.getParcelableExtra(RegisterActivity.REGISTER_ACTIVITY_EXTRA);
-
-        } else {
-            Toast.makeText(this, "User not found!", Toast.LENGTH_SHORT).show();
-            Log.d(TAG, "Receiving user extra: EXTRA NOT FOUND");
-        }
-
-        main_page_activity_layout_user_name_text_string = user != null ? user.getName() : "null";
-        main_page_activity_layout_user_name_text.setText(main_page_activity_layout_user_name_text_string);
-
-        main_page_activity_layout_menu_button.setOnClickListener(mainPageActivityLayoutMenuButtonView -> {
-            Log.d(TAG, "onClick: main_page_activity_layout_menu_button");
+        mainPageActivityLayoutMenuButton.setOnClickListener(mainPageActivityLayoutMenuButtonView -> {
+            Log.i(TAG, "onClick: main_page_activity_layout_menu_button");
             PopupMenu popupMenu = new PopupMenu(MainPageActivity.this, mainPageActivityLayoutMenuButtonView);
             popupMenu.getMenuInflater().inflate(R.menu.user_pop_up_menu, popupMenu.getMenu());
 
             // used to set all menu item fonts by applyFontToMenuItem(MenuItem mi) method
             Menu userPopUpMenu = popupMenu.getMenu();
+            Log.d(TAG, "Menu userPopUpMenu: applying fonts to menu items");
             for (int i = 0; i < userPopUpMenu.size(); i++) {
                 // sets current menu item 'mi' value as menu item number 'i'
                 // representing current loop iteration
@@ -93,43 +83,45 @@ public class MainPageActivity extends AppCompatActivity {
             }
 
             popupMenu.setOnMenuItemClickListener(popupMenuItemView -> {
-                Log.d(TAG, "onClick: popupMenu");
+                Log.i(TAG, "onClick: popupMenu");
                 int popupMenuItemID = popupMenuItemView.getItemId();
 
                 if (popupMenuItemID == R.id.user_popup_menu_logout_ID) {
-                    Log.d(TAG, "onClick: user_popup_menu_logout_ID");
-                    loggedON = false;
-                    putExtraOnLoggedOn(false);
+                    Log.i(TAG, "onClick: userPopupMenuLogout");
+                    // send loggedOn boolean value of false to SP
+                    mainPageActivitySP.edit().putBoolean(LOGGED_ON_BOOL_EXTRA, false).apply();
+
                     Intent main_page_activity_layout_back_button_intent = new Intent(
                             MainPageActivity.this, LoginRegisterActivity.class);
                     startActivity(main_page_activity_layout_back_button_intent);
 
                 } else if (popupMenuItemID == R.id.user_popup_menu_font_ID) {
-                    Log.d(TAG, "onClick: user_popup_menu_font_ID");
+                    Log.i(TAG, "onClick: userPopupMenuFont");
                     PopupMenu changeFontMenu = new PopupMenu(MainPageActivity.this, mainPageActivityLayoutMenuButtonView);
                     changeFontMenu.getMenuInflater().inflate(R.menu.change_fonts_menu, changeFontMenu.getMenu());
 
                     // get menu layout and change fonts of menu items to represent described fonts
                     // number in fonts id represents it's index position
                     Menu fontsMenu = changeFontMenu.getMenu();
+                    Log.d(TAG, "PopupMenu changeFontMenu: applying fonts to fonts items");
                     // menu item on index 0 changeFont0KalamRegularID
                     applyFontToMenuItem(fontsMenu.getItem(0), getResources().getFont(R.font.kalam_regular));
                     // menu item on index 1 changeFont1KomtxtbID
                     applyFontToMenuItem(fontsMenu.getItem(1), getResources().getFont(R.font.komtxtb_sans));
 
                     changeFontMenu.setOnMenuItemClickListener(changeFontMenuItem -> {
-                        Log.d(TAG, "onClick: changeFontMenu");
+                        Log.i(TAG, "onClick: changeFontMenu");
                         int changeFontMenuID = changeFontMenuItem.getItemId();
 
                         if (changeFontMenuID == R.id.changeFont0KalamRegularID) {
-                            Log.d(TAG, "onClick: changeFont0KalamRegularID");
-                            AppFonts.appFontString = AppFonts.KALAM_FONT;
-                            changeFont(AppFonts.appFontString);
+                            Log.i(TAG, "onClick: changeFont0KalamRegularID");
+                            mainPageActivitySP.edit().putString(AppFonts.KALAM_FONT, AppFonts.KALAM_FONT).apply();
+                            changeFont(AppFonts.KALAM_FONT);
 
                         } else if (changeFontMenuID == R.id.changeFont1KomtxtbID) {
-                            Log.d(TAG, "onClick: changeFont1KomtxtbID");
-                            AppFonts.appFontString = AppFonts.KOMTXTB_FONT;
-                            changeFont(AppFonts.appFontString);
+                            Log.i(TAG, "onClick: changeFont1KomtxtbID");
+                            mainPageActivitySP.edit().putString(AppFonts.KOMTXTB_FONT, AppFonts.KOMTXTB_FONT).apply();
+                            changeFont(AppFonts.KOMTXTB_FONT);
                         }
 
                         return false;
@@ -142,12 +134,8 @@ public class MainPageActivity extends AppCompatActivity {
         });
     }
 
-    void putExtraOnLoggedOn(boolean trueOrFalse) {
-        mainPageActivitySPEditor.putBoolean("loggedON", trueOrFalse);
-        mainPageActivitySPEditor.apply();
-    }
-
     private void applyFontToMenuItem(MenuItem mi) {
+        Log.i(TAG, "applyFontToMenuItem: ");
         //TODO get to know how spannable string works
         SpannableString mNewTitle = new SpannableString(mi.getTitle());
         // sets 'mNewTitle' span based on custom span class
@@ -158,6 +146,7 @@ public class MainPageActivity extends AppCompatActivity {
     }
 
     private void applyFontToMenuItem(MenuItem mi, Typeface typeface) {
+        Log.i(TAG, "applyFontToMenuItem: ");
         SpannableString mNewTitle = new SpannableString(mi.getTitle());
         // sets 'mNewTitle' span based on custom span class
         // uses passed typeFace parameter as font
@@ -170,25 +159,26 @@ public class MainPageActivity extends AppCompatActivity {
      * @param fontString
      */
     private void changeFont(String fontString) {
+        Log.i(TAG, "changeFont: ");
         Typeface typeface;
 
         if (fontString.equals(AppFonts.KALAM_FONT)) {
+            Log.d(TAG, "fontString.equals(AppFonts.KALAM_FONT)");
             typeface = getResources().getFont(R.font.kalam_regular);
 
         } else if (fontString.equals(AppFonts.KOMTXTB_FONT)) {
+            Log.d(TAG, "fontString.equals(AppFonts.KOMTXTB_FONT)");
             typeface = getResources().getFont(R.font.komtxtb_sans);
 
         } else {
+            Log.w(TAG, "font now found!");
             Toast.makeText(this, "Font not found!", Toast.LENGTH_LONG).show();
             return;
         }
 
-        mainPageActivitySPEditor.putString("font", fontString);
-        mainPageActivitySPEditor.apply();
-
         //TODO make fonts changes for whole app, not only locally
-        main_page_activity_layout_user_name_text.setTypeface(typeface);
-        main_page_activity_layout_menu_button.setTypeface(typeface);
+        mainPageActivityLayoutUserNameText.setTypeface(typeface);
+        mainPageActivityLayoutMenuButton.setTypeface(typeface);
     }
 
     /**
@@ -198,7 +188,9 @@ public class MainPageActivity extends AppCompatActivity {
      * @return typeface based on currently set AppFonts.appFontString
      */
     private Typeface getTypeface() {
-        String fontString = mainPageActivitySPReceiver.getString("font", AppFonts.appFontString);
+        Log.i(TAG, "getTypeface: ");
+        String fontString = mainPageActivitySPReceiver.getString(
+                DEFAULT_FONT_EXTRA, AppFonts.KOMTXTB_FONT);
 
         Typeface typeface = getResources().getFont(R.font.komtxtb_sans);
 
@@ -209,6 +201,12 @@ public class MainPageActivity extends AppCompatActivity {
             typeface = getResources().getFont(R.font.komtxtb_sans);
         }
 
+        Log.d(TAG, "return typeface with: " + fontString + " font");
         return typeface;
     }
+
+
+    SharedPreferences appFontsSPReceiver = getApplicationContext().getSharedPreferences(
+            MainPageActivity.MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
+
 }

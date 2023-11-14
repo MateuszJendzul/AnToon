@@ -1,11 +1,10 @@
-package com.artiline.antoon.activities;
+package com.artiline.antoon.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,34 +20,34 @@ public class LoginRegisterActivity extends AppCompatActivity {
         setContentView(R.layout.login_register_activity_layout);
         Log.d(TAG, "onCreate: LoginRegisterActivity");
 
-        TextView login_register_layout_text = findViewById(R.id.login_register_activity_layout_text_ID);
-        Button login_register_activity_layout_register_button = findViewById(R.id.login_register_activity_layout_register_button_ID);
-        Button login_register_activity_layout_login_button = findViewById(R.id.login_register_activity_layout_login_button_ID);
-        Button login_register_activity_layout_back_button = findViewById(R.id.login_register_layout_back_button_ID);
+        TextView loginRegisterLayoutText = findViewById(R.id.login_register_activity_layout_text_ID);
+        Button loginRegisterActivityLayoutRegisterButton = findViewById(R.id.login_register_activity_layout_register_button_ID);
+        Button loginRegisterActivityLayoutLoginButton = findViewById(R.id.login_register_activity_layout_login_button_ID);
+        Button loginRegisterActivityLayoutBackButton = findViewById(R.id.login_register_layout_back_button_ID);
 
-        String text_1_text_string = "OR";
-        login_register_layout_text.setText(text_1_text_string);
-        login_register_layout_text.setTextSize(26);
+        String orString = "OR";
+        loginRegisterLayoutText.setText(orString);
+        loginRegisterLayoutText.setTextSize(26);
 
-        login_register_activity_layout_register_button.setOnClickListener(view -> {
-            Log.d(TAG, "onClick: login_register_activity_layout_register_button");
-            Intent login_register_layout_register_button_intent = new Intent(
+        loginRegisterActivityLayoutRegisterButton.setOnClickListener(view -> {
+            Log.d(TAG, "onClick: loginRegisterActivityLayoutRegisterButton");
+            Intent loginRegisterLayoutRegisterButtonIntent = new Intent(
                     LoginRegisterActivity.this, RegisterActivity.class);
-            startActivity(login_register_layout_register_button_intent);
+            startActivity(loginRegisterLayoutRegisterButtonIntent);
         });
 
-        login_register_activity_layout_login_button.setOnClickListener(view -> {
-            Log.d(TAG, "onClick: login_register_activity_layout_login_button");
-            Intent login_register_layout_login_button_intent = new Intent(
+        loginRegisterActivityLayoutLoginButton.setOnClickListener(view -> {
+            Log.d(TAG, "onClick: loginRegisterActivityLayoutLoginButton");
+            Intent loginRegisterLayoutLoginButtonIntent = new Intent(
                     LoginRegisterActivity.this, LoginActivity.class);
-            startActivity(login_register_layout_login_button_intent);
+            startActivity(loginRegisterLayoutLoginButtonIntent);
         });
 
-        login_register_activity_layout_back_button.setOnClickListener(view -> {
-            Log.d(TAG, "onClick: login_register_activity_layout_back_button");
-            Intent login_register_layout_back_button_intent = new Intent(
+        loginRegisterActivityLayoutBackButton.setOnClickListener(view -> {
+            Log.d(TAG, "onClick: loginRegisterActivityLayoutBackButton");
+            Intent loginRegisterLayoutBackButtonIntent = new Intent(
                     LoginRegisterActivity.this, HomeActivity.class);
-            startActivity(login_register_layout_back_button_intent);
+            startActivity(loginRegisterLayoutBackButtonIntent);
         });
     }
 }
