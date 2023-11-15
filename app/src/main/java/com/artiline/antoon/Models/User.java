@@ -8,7 +8,6 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import com.artiline.antoon.Database.PrimaryKeyGenerator;
-import com.artiline.antoon.Exceptions.IDLessThanOneException;
 
 import java.io.Serializable;
 
@@ -25,6 +24,8 @@ public class User implements Serializable {
     private String password = "Password";
     @ColumnInfo(name = "userCreated")
     private boolean userCreated = false;
+    @ColumnInfo(name = "font")
+    private String font = "Default";
 
     public void setID(int ID) {
         this.ID = ID;
@@ -66,6 +67,14 @@ public class User implements Serializable {
         this.userCreated = userCreated;
     }
 
+    public String getFont() {
+        return font;
+    }
+
+    public void setFont(String font) {
+        this.font = font;
+    }
+
     public User() {
         Log.i(TAG, "User No Args Constructor:");
     }
@@ -78,6 +87,7 @@ public class User implements Serializable {
         Log.i(TAG, "User: Constructor: " + "ID: " + getID() + " Name: " + getName() +
                 " Password: " + getPassword() + " Email: " + getEmail());
     }
+
 
     @NonNull
     @Override

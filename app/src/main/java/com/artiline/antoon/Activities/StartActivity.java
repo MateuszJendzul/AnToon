@@ -15,8 +15,11 @@ import com.artiline.antoon.Models.User;
 
 public class StartActivity extends AppCompatActivity {
     private static final String TAG = "StartActivity";
+
+    // declare and initialize name strings
     private static final String START_ACTIVITY_EXTRA = "startActivityExtra";
-    // declare SP
+
+    // declare instances
     SharedPreferences startActivitySP, startActivitySPReceiver, startActivityMainPageSPReceiver;
     UserDAO userDAO;
 
@@ -24,21 +27,24 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate: StartActivity");
+
+        // initialize instances
         userDAO = UserRoomDB.getInstance(this).usersDAO();
         startActivitySP = getSharedPreferences(START_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
         startActivitySPReceiver = getApplicationContext().getSharedPreferences(
                 START_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
+        startActivityMainPageSPReceiver = getApplicationContext().getSharedPreferences(
+                MainPageActivity.MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
 
+        // used to limit admin profile creation to one per application
         boolean adminCreated = startActivitySPReceiver.getBoolean("adminCreated", false);
+
         // when there is none, creates admin profile with default values
         if (!adminCreated) {
             createAdmin();
             startActivitySP.edit().putBoolean("adminCreated", true).apply();
         }
 
-        // initialize SP
-        startActivityMainPageSPReceiver = getApplicationContext().getSharedPreferences(
-                MainPageActivity.MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
         // get bool value from SP
         boolean loggedON = startActivityMainPageSPReceiver.getBoolean(MainPageActivity.LOGGED_ON_BOOL_EXTRA, false);
         Log.d(TAG, "getting boolean loggedON from startActivitySPReceiverMain boolean: " + loggedON);

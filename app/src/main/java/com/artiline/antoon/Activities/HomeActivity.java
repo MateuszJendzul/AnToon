@@ -14,18 +14,23 @@ import com.artiline.antoon.R;
 public class HomeActivity extends AppCompatActivity {
     private static final String TAG = "HomeActivity";
 
+    // declare layout objects
+    TextView homeActivityLayoutWelcomeText;
+    Button homeActivityLayoutLoginButton;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_activity_layout);
         Log.i(TAG, "onCreate: HomeActivity");
 
-        TextView homeActivityLayoutWelcomeText = findViewById(R.id.home_activity_layout_welcome_text_ID);
-        Button homeActivityLayoutLoginButton = findViewById(R.id.home_activity_layout_login_button_ID);
+        // initialize layout objects
+        homeActivityLayoutWelcomeText = findViewById(R.id.home_activity_layout_welcome_text_ID);
+        homeActivityLayoutLoginButton = findViewById(R.id.home_activity_layout_login_button_ID);
 
-        String anToon = "AnToon";
+        // displays text as application name
+        String anToon = getString(R.string.app_name);
         homeActivityLayoutWelcomeText.setText(anToon);
-
 
         homeActivityLayoutLoginButton.setOnClickListener(view -> {
             Log.i(TAG, "onClick: homeActivityLayoutLoginButton");

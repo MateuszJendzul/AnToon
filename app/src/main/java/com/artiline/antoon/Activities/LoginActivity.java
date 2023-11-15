@@ -19,11 +19,20 @@ import com.artiline.antoon.Database.UserRoomDB;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
+
+    // declare and initialize name strings
     public static final String LOGIN_ACTIVITY_EXTRA = "loginActivityExtra";
+
+    // declare and initialize variables
     private boolean passwordVisible = false;
     private boolean passwordHidden = true;
+
+    // declare layout objects
+    EditText loginActivityLayoutNameEditText, loginActivityLayoutPasswordEditText;
+    Button loginActivityLayoutBackButton, loginActivityLayoutLoginButton, loginActivityLayoutShowPasswordButton;
+
+    //declare instances
     UserDAO userDAO;
-    // declare SP as MainPageActivity (to replace boolean onLogged value)
     SharedPreferences loginActivitySP;
 
     @Override
@@ -31,38 +40,46 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity_layout);
         Log.i(TAG, "onCreate: LoginActivity");
-        userDAO = UserRoomDB.getInstance(this).usersDAO();
 
-        // initialize SP
+        // initialize instances
+        userDAO = UserRoomDB.getInstance(this).usersDAO();
         loginActivitySP = getSharedPreferences(LOGIN_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
 
-        EditText loginActivityLayoutNameEditText = findViewById(R.id.login_activity_layout_name_edit_text_ID);
-        EditText loginActivityLayoutPasswordEditText = findViewById(R.id.login_activity_layout_password_edit_text_ID);
-        Button loginActivityLayoutBackButton = findViewById(R.id.login_activity_layout_back_button_ID);
-        Button loginActivityLayoutLoginButton = findViewById(R.id.login_activity_layout_login_button_ID);
-        Button loginActivityLayoutShowPasswordButton = findViewById(R.id.login_activity_layout_show_password_button_ID);
+        // initialize layout objects
+        loginActivityLayoutNameEditText = findViewById(R.id.login_activity_layout_name_edit_text_ID);
+        loginActivityLayoutPasswordEditText = findViewById(R.id.login_activity_layout_password_edit_text_ID);
+        loginActivityLayoutBackButton = findViewById(R.id.login_activity_layout_back_button_ID);
+        loginActivityLayoutLoginButton = findViewById(R.id.login_activity_layout_login_button_ID);
+        loginActivityLayoutShowPasswordButton = findViewById(R.id.login_activity_layout_show_password_button_ID);
 
         loginActivityLayoutLoginButton.setOnClickListener(v -> {
             Log.i(TAG, "onClick: loginActivityLayoutLoginButton");
             String userName = loginActivityLayoutNameEditText.getText().toString();
             String userPassword = loginActivityLayoutPasswordEditText.getText().toString();
 
+            // if all fields are filled
             if (!loginActivityLayoutNameEditText.getText().toString().isEmpty()
                     && !loginActivityLayoutPasswordEditText.getText().toString().isEmpty()) {
-                int loggedUserID = loggedUserID(userName, userPassword);
+                int loggedUserID = findUserID(userName, userPassword);
+                // use SP to send int value representing ID of currently logged user
+                loginActivitySP.edit().putInt("loggedUserID", loggedUserID).apply();
 
+                // should never occur, default "admin" user is created on first application launch
                 if (userDAO.getAll().isEmpty()) {
                     Toast.makeText(this, "List of Users is empty!",
                             Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Empty list, Check for Admin profile!");
 
+                    // if int equals (or is bigger than) 0, launch intent and change page to MainPageActivity
                 } else if (loggedUserID >= 0) {
-                    loginActivitySP.edit().putInt("loggedUserID", loggedUserID).apply();
-                    Log.d(TAG, "loginActivitySP.edit().putInt(\"loggedUserID\") = " + loggedUserID);
+                    Log.d(TAG, "loggedUserID = " + loggedUserID + " launching MainPageActivity");
                     Intent loginActivityLayoutLoginButtonIntent = new Intent(
-                            getApplicationContext(), MainPageActivity.class);
+                            LoginActivity.this, MainPageActivity.class);
                     startActivity(loginActivityLayoutLoginButtonIntent);
+
                 } else {
                     Log.e(TAG, "loggedUserID not found! ID is less than 0");
+                    Log.e(TAG, "Possibly loggedUserID() method returned -1 when no matching user was found");
                 }
 
             } else {
@@ -73,9 +90,7 @@ public class LoginActivity extends AppCompatActivity {
 
         loginActivityLayoutBackButton.setOnClickListener(view -> {
             Log.i(TAG, "onClick: loginActivityLayoutBackButton");
-            Intent login_activity_layout_back_button_intent = new Intent(
-                    this, LoginRegisterActivity.class);
-            startActivity(login_activity_layout_back_button_intent);
+            finish();
         });
 
         loginActivityLayoutShowPasswordButton.setOnClickListener(view -> {
@@ -97,24 +112,31 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private int loggedUserID(String userName, String userPassword) {
+    /**
+     * Returns ID of user when provided parameters are successfully matched with ID of User object from List of Users from DAO.
+     *
+     * @param userName     user name to compare
+     * @param userPassword user password to compare
+     * @return returns ID of matched User object
+     */
+    private int findUserID(String userName, String userPassword) {
         Log.i(TAG, "loggedUser: ");
-        for (int x = 0; x <= userDAO.getAll().size(); x++) {
-            if (userName.equals(userDAO.getAll().get(x).getName())) {
-                if (userPassword.equals(userDAO.getAll().get(x).getPassword())) {
-                    Log.d(TAG, "loggedUser: returning user: " + userDAO.getAll().get(x).getName()
-                            + " with ID of: " + userDAO.getAll().get(x).getID());
-                    return userDAO.getAll().get(x).getID();
+        for (int x = 0; x < userDAO.getAll().size(); x++) {
+            if (userName.equals(userDAO.getUserByID(x).getName())) {
+                if (userPassword.equals(userDAO.getUserByID(x).getPassword())) {
+                    Log.d(TAG, "Returning user: " + userDAO.getUserByID(x).getName()
+                            + " with ID of: " + userDAO.getUserByID(x).getID());
+                    return userDAO.getUserByID(x).getID();
                 } else {
-                    Log.d(TAG, "loggedUser: Passwords doesn't match!");
+                    Log.d(TAG, "Passwords doesn't match!");
                     Toast.makeText(LoginActivity.this, "Passwords doesn't match!",
                             Toast.LENGTH_SHORT).show();
                 }
-            } else {
-                Log.d(TAG, "loggedUser: User not found!");
-                Toast.makeText(LoginActivity.this, "User not found!", Toast.LENGTH_SHORT).show();
             }
         }
+        Log.d(TAG, "User name not found!");
+        Toast.makeText(LoginActivity.this, "User name not found!!",
+                Toast.LENGTH_SHORT).show();
         return -1;
     }
 }
