@@ -20,6 +20,9 @@
     <string name="pop_up_menu_font_text_string">Font</string>
     <string name="kalam_string_font">Kalam</string>
     <string name="komtxtb_string_font">Komtxtb</string>
+    <string name="comicsPictureDescriptionString">Picture of Comics</string>
+    <string name="comicsNameString">Comics Name</string>
+    <string name="chapterCount">1/99</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris

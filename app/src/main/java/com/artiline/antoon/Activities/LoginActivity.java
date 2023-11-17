@@ -14,8 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.artiline.antoon.R;
-import com.artiline.antoon.Database.UserDAO;
-import com.artiline.antoon.Database.UserRoomDB;
+import com.artiline.antoon.Database.User.UserDAO;
+import com.artiline.antoon.Database.User.UserRoomDB;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";

@@ -19,13 +19,14 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.artiline.antoon.R;
-import com.artiline.antoon.Database.UserDAO;
-import com.artiline.antoon.Database.UserRoomDB;
+import com.artiline.antoon.Database.User.UserDAO;
+import com.artiline.antoon.Database.User.UserRoomDB;
 import com.artiline.antoon.Database.AppFonts;
 import com.artiline.antoon.Database.CustomTypeFaceSpan;
-import com.artiline.antoon.Models.User;
+import com.artiline.antoon.Database.Models.User;
 
 public class MainPageActivity extends AppCompatActivity {
     private static final String TAG = "MainPageActivity";
@@ -37,6 +38,7 @@ public class MainPageActivity extends AppCompatActivity {
     // declare layout objects
     TextView mainPageActivityLayoutUserNameText;
     Button mainPageActivityLayoutMenuButton;
+    RecyclerView recyclerView;
 
     // declare instances
     SharedPreferences mainPageActivitySP, mainPageActivitySPReceiver, loginActivitySPReceiver;
@@ -60,6 +62,7 @@ public class MainPageActivity extends AppCompatActivity {
         // initialize layout objects
         mainPageActivityLayoutUserNameText = findViewById(R.id.main_page_activity_layout_user_name_text_ID);
         mainPageActivityLayoutMenuButton = findViewById(R.id.main_page_activity_layout_menu_button_ID);
+        recyclerView = findViewById(R.id.comicsCardViewID);
 
         int loggedUserID = loginActivitySPReceiver.getInt("loggedUserID", -1);
         Log.d(TAG, "getInt(\"loggedUserID\", -1): " + loggedUserID);

@@ -1,4 +1,4 @@
-package com.artiline.antoon.Models;
+package com.artiline.antoon.Database.Models;
 
 import android.util.Log;
 
@@ -13,7 +13,7 @@ import java.io.Serializable;
 
 @Entity(tableName = "User")
 public class User implements Serializable {
-    private static final String TAG = "UsersDatabase";
+    private static final String TAG = "User";
     @PrimaryKey
     private int ID = 0;
     @ColumnInfo(name = "name")
@@ -76,23 +76,28 @@ public class User implements Serializable {
     }
 
     public User() {
-        Log.i(TAG, "User No Args Constructor:");
+        Log.i(TAG, "User: no args constructor:");
     }
 
     public User(String name, String email, String password) {
-        this.ID = PrimaryKeyGenerator.generatePrimaryKey();
+        this.ID = PrimaryKeyGenerator.generateUserPrimaryKey();
         this.name = name;
         this.email = email;
         this.password = password;
-        Log.i(TAG, "User: Constructor: " + "ID: " + getID() + " Name: " + getName() +
+        Log.i(TAG, "User: constructor: " + "ID: " + getID() + " Name: " + getName() +
                 " Password: " + getPassword() + " Email: " + getEmail());
     }
-
 
     @NonNull
     @Override
     public String toString() {
-        return "User{" + "ID=" + ID + ", name=" + name + ", email=" + email + " userCreated= " +
-                userCreated + '}';
+        return "User{" +
+                "ID=" + ID +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", userCreated=" + userCreated +
+                ", font='" + font + '\'' +
+                '}';
     }
 }

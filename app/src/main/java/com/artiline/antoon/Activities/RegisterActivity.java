@@ -14,9 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.artiline.antoon.R;
-import com.artiline.antoon.Database.UserDAO;
-import com.artiline.antoon.Database.UserRoomDB;
-import com.artiline.antoon.Models.User;
+import com.artiline.antoon.Database.User.UserDAO;
+import com.artiline.antoon.Database.User.UserRoomDB;
+import com.artiline.antoon.Database.Models.User;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity";
