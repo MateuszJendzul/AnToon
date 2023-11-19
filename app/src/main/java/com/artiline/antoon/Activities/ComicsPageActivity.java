@@ -1,2 +1,4 @@
-package com.artiline.antoon.Activities.Adapters;public class ComicsPageActivity {
+package com.artiline.antoon.Activities;
+
+public class ComicsPageActivity {
 }

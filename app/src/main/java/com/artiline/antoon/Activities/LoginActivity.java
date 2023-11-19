@@ -70,11 +70,11 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Empty list, Check for Admin profile!");
 
-                    // if int equals (or is bigger than) 0, launch intent and change page to MainPageActivity
+                    // if int equals (or is bigger than) 0, launch intent and change page to UserPageActivity
                 } else if (loggedUserID >= 0) {
-                    Log.d(TAG, "loggedUserID = " + loggedUserID + " launching MainPageActivity");
+                    Log.d(TAG, "loggedUserID = " + loggedUserID + " launching UserPageActivity");
                     Intent loginActivityLayoutLoginButtonIntent = new Intent(
-                            LoginActivity.this, MainPageActivity.class);
+                            LoginActivity.this, UserPageActivity.class);
                     startActivity(loginActivityLayoutLoginButtonIntent);
 
                 } else {

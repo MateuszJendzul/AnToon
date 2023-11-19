@@ -72,7 +72,7 @@ public class RegisterActivity extends AppCompatActivity {
                         + " with ID of: " + newUser.getID());
                 // after creating user and sending its ID, starts main user page screen
                 Intent registerActivityLayoutLoginButtonIntent = new Intent(
-                        RegisterActivity.this, MainPageActivity.class);
+                        RegisterActivity.this, UserPageActivity.class);
                 startActivity(registerActivityLayoutLoginButtonIntent);
 
             } else {

@@ -23,9 +23,10 @@
         </activity>
         <activity android:name=".Activities.HomeActivity" />
         <activity android:name=".Activities.LoginRegisterActivity" />
-        <activity android:name=".Activities.MainPageActivity" />
+        <activity android:name=".Activities.UserPageActivity" />
         <activity android:name=".Activities.RegisterActivity" />
         <activity android:name=".Activities.LoginActivity" />
+        <activity android:name=".Activities.ComicsPageActivity" />
 
     </application>
 

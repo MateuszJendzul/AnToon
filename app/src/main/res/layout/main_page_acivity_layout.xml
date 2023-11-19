@@ -7,6 +7,16 @@
     android:theme="@style/Theme.AnToon.NoActionBar"
     tools:ignore="HardcodedText, TextContrastCheck">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/comics_recycler_ID"
+        android:layout_marginTop="130dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/main_page_activity_layout_user_name_text_ID"
         style="@style/MediumTextAppearance"

@@ -34,7 +34,7 @@ public class StartActivity extends AppCompatActivity {
         startActivitySPReceiver = getApplicationContext().getSharedPreferences(
                 START_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
         startActivityMainPageSPReceiver = getApplicationContext().getSharedPreferences(
-                MainPageActivity.MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
+                UserPageActivity.MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
 
         // used to limit admin profile creation to one per application
         boolean adminCreated = startActivitySPReceiver.getBoolean("adminCreated", false);
@@ -46,16 +46,16 @@ public class StartActivity extends AppCompatActivity {
         }
 
         // get bool value from SP
-        boolean loggedON = startActivityMainPageSPReceiver.getBoolean(MainPageActivity.LOGGED_ON_BOOL_EXTRA, false);
+        boolean loggedON = startActivityMainPageSPReceiver.getBoolean(UserPageActivity.LOGGED_ON_BOOL_EXTRA, false);
         Log.d(TAG, "getting boolean loggedON from startActivitySPReceiverMain boolean: " + loggedON);
 
         Intent startActivityIntent;
 
-        // check for MainPageActivity bool value based on fact if user did log in (true) or out (false)
+        // check for UserPageActivity bool value based on fact if user did log in (true) or out (false)
         // if user did logout application will start from HomeActivity as by default
         if (loggedON) {
             Log.d(TAG, "loggedON: true");
-            startActivityIntent = new Intent(this, MainPageActivity.class);
+            startActivityIntent = new Intent(this, UserPageActivity.class);
             startActivity(startActivityIntent);
 
         } else {

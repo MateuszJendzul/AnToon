@@ -11,7 +11,6 @@ import com.artiline.antoon.Database.Models.Comics;
 @Database(entities = {Comics.class}, version = 1, exportSchema = false)
 public abstract class ComicsRoomDB extends RoomDatabase {
     public abstract ComicsDAO comicsDAO();
-
     private static ComicsRoomDB comicsRoomDB;
     private static final String DATABASE_NAME = "comics";
 

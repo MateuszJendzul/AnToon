@@ -15,7 +15,7 @@ public interface UserDAO {
     @Insert
     void insert(User user);
 
-    @Query("SELECT * FROM User where ID = :ID")
+    @Query("SELECT * FROM User WHERE ID = :ID")
     User getUserByID(int ID);
 
     @Query("SELECT * FROM User ORDER BY ID ASC")

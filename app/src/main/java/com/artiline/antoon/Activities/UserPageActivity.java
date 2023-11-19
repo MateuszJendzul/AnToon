@@ -25,6 +25,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.artiline.antoon.Activities.Adapters.ComicsListAdapter;
+import com.artiline.antoon.Database.Comics.ComicsDAO;
+import com.artiline.antoon.Database.Comics.ComicsRoomDB;
 import com.artiline.antoon.Database.ComicsClickListener;
 import com.artiline.antoon.Database.Models.Comics;
 import com.artiline.antoon.R;
@@ -34,10 +36,12 @@ import com.artiline.antoon.Database.AppFonts;
 import com.artiline.antoon.Database.CustomTypeFaceSpan;
 import com.artiline.antoon.Database.Models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class MainPageActivity extends AppCompatActivity {
-    private static final String TAG = "MainPageActivity";
+public class UserPageActivity extends AppCompatActivity {
+    private static final String TAG = "UserPageActivity";
+    List<Comics> comicsList = new ArrayList<>();
 
     // declare and initialize name strings
     public static final String MAIN_PAGE_ACTIVITY_EXTRA = "mainPageActivityExtra";
@@ -51,6 +55,7 @@ public class MainPageActivity extends AppCompatActivity {
 
     // declare instances
     SharedPreferences mainPageActivitySP, mainPageActivitySPReceiver, loginActivitySPReceiver;
+    ComicsDAO comicsDAO;
     UserDAO userDAO;
     User user;
 
@@ -58,10 +63,11 @@ public class MainPageActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_page_acivity_layout);
-        Log.i(TAG, "onCreate: MainPageActivity");
+        Log.i(TAG, "onCreate: UserPageActivity");
 
         // initialize instances
         userDAO = UserRoomDB.getInstance(this).usersDAO();
+        comicsDAO = ComicsRoomDB.getInstance(this).comicsDAO();
         mainPageActivitySP = getSharedPreferences(MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
         mainPageActivitySPReceiver = getApplicationContext().getSharedPreferences(
                 MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
@@ -73,11 +79,15 @@ public class MainPageActivity extends AppCompatActivity {
         mainPageActivityLayoutMenuButton = findViewById(R.id.main_page_activity_layout_menu_button_ID);
         recyclerView = findViewById(R.id.comics_recycler_ID);
 
+        comicsList = comicsDAO.getAll();
         int loggedUserID = loginActivitySPReceiver.getInt("loggedUserID", -1);
         Log.d(TAG, "getInt(\"loggedUserID\", -1): " + loggedUserID);
         // set current user object as object from DAO
         user = userDAO.getUserByID(loggedUserID);
         mainPageActivityLayoutUserNameText.setText(user.getName());
+
+        setDefaultComics();
+        updateRecycler(comicsList);
 
         // load previously selected (or default) font
         changeFont(user.getFont());
@@ -86,7 +96,7 @@ public class MainPageActivity extends AppCompatActivity {
 
         mainPageActivityLayoutMenuButton.setOnClickListener(mainPageActivityLayoutMenuButtonView -> {
             Log.i(TAG, "onClick: main_page_activity_layout_menu_button");
-            PopupMenu popupMenu = new PopupMenu(MainPageActivity.this, mainPageActivityLayoutMenuButtonView);
+            PopupMenu popupMenu = new PopupMenu(UserPageActivity.this, mainPageActivityLayoutMenuButtonView);
             popupMenu.getMenuInflater().inflate(R.menu.user_pop_up_menu, popupMenu.getMenu());
 
             // used to set all menu item fonts by applyFontToMenuItem(MenuItem mi) method
@@ -111,13 +121,13 @@ public class MainPageActivity extends AppCompatActivity {
                     Log.d(TAG, "putBoolean(LOGGED_ON_BOOL_EXTRA, false)");
 
                     Intent main_page_activity_layout_back_button_intent = new Intent(
-                            MainPageActivity.this, LoginRegisterActivity.class);
+                            UserPageActivity.this, LoginRegisterActivity.class);
                     startActivity(main_page_activity_layout_back_button_intent);
 
                 } else if (popupMenuItemID == R.id.user_popup_menu_font_ID) {
                     Log.i(TAG, "onClick: userPopupMenuFont");
                     // create new PopupMenu menu object to inflate list of available fonts
-                    PopupMenu changeFontMenu = new PopupMenu(MainPageActivity.this, mainPageActivityLayoutMenuButtonView);
+                    PopupMenu changeFontMenu = new PopupMenu(UserPageActivity.this, mainPageActivityLayoutMenuButtonView);
                     changeFontMenu.getMenuInflater().inflate(R.menu.change_fonts_menu, changeFontMenu.getMenu());
 
                     // get menu layout and change fonts of menu items to represent described fonts
@@ -175,22 +185,24 @@ public class MainPageActivity extends AppCompatActivity {
         Log.i(TAG, "updateRecycler: ");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL));
-        comicsListAdapter = new ComicsListAdapter(this, comicsList, comic)
+        comicsListAdapter = new ComicsListAdapter(this, comicsList, comicsClickListener);
+        recyclerView.setAdapter(comicsListAdapter);
     }
 
     private final ComicsClickListener comicsClickListener = new ComicsClickListener() {
         @Override
         public void onClick(Comics comics) {
             Log.i(TAG, "comicsClickListener: onClick: ");
-            
+            Intent comicsClickListenerIntent = new Intent(UserPageActivity.this, ComicsPageActivity.class);
+            startActivity(comicsClickListenerIntent);
         }
 
         @Override
         public void onLongClick(Comics comics, CardView cardView) {
             Log.i(TAG, "comicsClickListener: onLongClick: ");
-
+            Toast.makeText(UserPageActivity.this, "onLongClick", Toast.LENGTH_SHORT).show();
         }
-    }
+    };
 
     /**
      * Changes typeface (font) of selected menu item.
@@ -285,5 +297,12 @@ public class MainPageActivity extends AppCompatActivity {
 
         Log.d(TAG, "return typeface with: " + user.getFont() + " font");
         return typeface;
+    }
+
+    private void setDefaultComics() {
+        Log.i(TAG, "setDefaultComics: ");
+        String defaultComicsString = "Add new";
+        Comics comics = new Comics(defaultComicsString);
+        comicsDAO.insert(comics);
     }
 }
