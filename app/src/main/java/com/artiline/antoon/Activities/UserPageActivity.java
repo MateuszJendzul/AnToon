@@ -19,14 +19,22 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.artiline.antoon.Activities.Adapters.ComicsListAdapter;
+import com.artiline.antoon.Database.ComicsClickListener;
+import com.artiline.antoon.Database.Models.Comics;
 import com.artiline.antoon.R;
 import com.artiline.antoon.Database.User.UserDAO;
 import com.artiline.antoon.Database.User.UserRoomDB;
 import com.artiline.antoon.Database.AppFonts;
 import com.artiline.antoon.Database.CustomTypeFaceSpan;
 import com.artiline.antoon.Database.Models.User;
+
+import java.util.List;
 
 public class MainPageActivity extends AppCompatActivity {
     private static final String TAG = "MainPageActivity";
@@ -38,6 +46,7 @@ public class MainPageActivity extends AppCompatActivity {
     // declare layout objects
     TextView mainPageActivityLayoutUserNameText;
     Button mainPageActivityLayoutMenuButton;
+    ComicsListAdapter comicsListAdapter;
     RecyclerView recyclerView;
 
     // declare instances
@@ -62,7 +71,7 @@ public class MainPageActivity extends AppCompatActivity {
         // initialize layout objects
         mainPageActivityLayoutUserNameText = findViewById(R.id.main_page_activity_layout_user_name_text_ID);
         mainPageActivityLayoutMenuButton = findViewById(R.id.main_page_activity_layout_menu_button_ID);
-        recyclerView = findViewById(R.id.comicsCardViewID);
+        recyclerView = findViewById(R.id.comics_recycler_ID);
 
         int loggedUserID = loginActivitySPReceiver.getInt("loggedUserID", -1);
         Log.d(TAG, "getInt(\"loggedUserID\", -1): " + loggedUserID);
@@ -160,6 +169,27 @@ public class MainPageActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
+    private void updateRecycler(List<Comics> comicsList) {
+        Log.i(TAG, "updateRecycler: ");
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL));
+        comicsListAdapter = new ComicsListAdapter(this, comicsList, comic)
+    }
+
+    private final ComicsClickListener comicsClickListener = new ComicsClickListener() {
+        @Override
+        public void onClick(Comics comics) {
+            Log.i(TAG, "comicsClickListener: onClick: ");
+            
+        }
+
+        @Override
+        public void onLongClick(Comics comics, CardView cardView) {
+            Log.i(TAG, "comicsClickListener: onLongClick: ");
+
+        }
     }
 
     /**
