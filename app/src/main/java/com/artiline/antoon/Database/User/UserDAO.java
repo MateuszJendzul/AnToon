@@ -1,5 +1,6 @@
 package com.artiline.antoon.Database.User;
 
+
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -12,13 +13,11 @@ import java.util.List;
 
 @Dao
 public interface UserDAO {
+
     @Insert
     void insert(User user);
 
-    @Query("SELECT * FROM User WHERE ID = :ID")
-    User getUserByID(int ID);
-
-    @Query("SELECT * FROM User ORDER BY ID ASC")
+    @Query("SELECT * FROM User ORDER BY userID ASC")
     List<User> getAll();
 
     @Update

@@ -20,10 +20,12 @@ import com.artiline.antoon.Database.Models.User;
 
 public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "RegisterActivity";
+    private static final String REGISTER_ACTIVITY_EXTRA = "registerActivityExtra";
 
     // declare and initialize variables
     private boolean hidePassword = false;
     private boolean showPassword = true;
+    private static int ID = 1;
 
     // declare layout objects
     EditText registerActivityLayoutNameEditText, registerActivityLayoutPasswordEditText, registerActivityLayoutEmailEditText;
@@ -31,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     //declare instances
     UserDAO userDAO;
-    SharedPreferences loginActivitySP;
+    SharedPreferences loginActivitySP, registerActivitySP, registerActivitySPReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,6 +44,9 @@ public class RegisterActivity extends AppCompatActivity {
         // initialize instances
         userDAO = UserRoomDB.getInstance(this).usersDAO();
         loginActivitySP = getSharedPreferences(LoginActivity.LOGIN_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
+        registerActivitySP = getSharedPreferences(REGISTER_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
+        registerActivitySPReceiver = getApplicationContext().getSharedPreferences(
+                REGISTER_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
 
         // initialize layout objects
         registerActivityLayoutNameEditText = findViewById(R.id.register_activity_layout_name_edit_text_ID);
@@ -62,14 +67,32 @@ public class RegisterActivity extends AppCompatActivity {
                     && !registerActivityLayoutPasswordEditText.getText().toString().isEmpty()
                     && !registerActivityLayoutEmailEditText.getText().toString().isEmpty()) {
 
+                ID = registerActivitySPReceiver.getInt("ID", 1);
+                Log.d(TAG, "registerActivitySPReceiver.getInt(\"ID\" , 1)");
+                Log.e(TAG, "!!!!!!!!ID = " + ID);
+
                 // create User object using strings based on user input
-                User newUser = new User(userName, userEmail, userPassword);
+                User newUser = new User();
+                newUser.setUserID(ID);
+                newUser.setName(userName);
+                newUser.setPassword(userPassword);
+                newUser.setEmail(userEmail);
                 // uploads (inserts) newly created user object to DAO List of Users
                 userDAO.insert(newUser);
+                Log.i(TAG, "User: constructor: " + "ID: " + userDAO.getAll().get(ID).getUserID() +
+                        " Name: " + userDAO.getAll().get(ID).getName() +
+                        " Password: " + userDAO.getAll().get(ID).getPassword() +
+                        " Email: " + userDAO.getAll().get(ID).getEmail());
+                //TODO prevent user from creating new profile with same name as existing one
+
                 // use SP to send int value representing ID of currently registered user
-                loginActivitySP.edit().putInt("loggedUserID", newUser.getID()).apply();
+                loginActivitySP.edit().putInt("loggedUserID", userDAO.getAll().get(ID).getUserID()).apply();
                 Log.d(TAG, "Registered User: " + newUser.getName()
-                        + " with ID of: " + newUser.getID());
+                        + " with ID of: " + userDAO.getAll().get(ID).getUserID());
+                // increment ID and put in into SP to later receive it and set it as new user ID
+                ID++;
+                Log.e(TAG, "!!!!!!!!ID = " + ID);
+                registerActivitySP.edit().putInt("ID", ID).apply();
                 // after creating user and sending its ID, starts main user page screen
                 Intent registerActivityLayoutLoginButtonIntent = new Intent(
                         RegisterActivity.this, UserPageActivity.class);

@@ -19,16 +19,8 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.artiline.antoon.Activities.Adapters.ComicsListAdapter;
-import com.artiline.antoon.Database.Comics.ComicsDAO;
-import com.artiline.antoon.Database.Comics.ComicsRoomDB;
-import com.artiline.antoon.Database.ComicsClickListener;
-import com.artiline.antoon.Database.Models.Comics;
 import com.artiline.antoon.R;
 import com.artiline.antoon.Database.User.UserDAO;
 import com.artiline.antoon.Database.User.UserRoomDB;
@@ -36,12 +28,8 @@ import com.artiline.antoon.Database.AppFonts;
 import com.artiline.antoon.Database.CustomTypeFaceSpan;
 import com.artiline.antoon.Database.Models.User;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class UserPageActivity extends AppCompatActivity {
     private static final String TAG = "UserPageActivity";
-    List<Comics> comicsList = new ArrayList<>();
 
     // declare and initialize name strings
     public static final String MAIN_PAGE_ACTIVITY_EXTRA = "mainPageActivityExtra";
@@ -50,24 +38,21 @@ public class UserPageActivity extends AppCompatActivity {
     // declare layout objects
     TextView mainPageActivityLayoutUserNameText;
     Button mainPageActivityLayoutMenuButton;
-    ComicsListAdapter comicsListAdapter;
     RecyclerView recyclerView;
 
     // declare instances
     SharedPreferences mainPageActivitySP, mainPageActivitySPReceiver, loginActivitySPReceiver;
-    ComicsDAO comicsDAO;
     UserDAO userDAO;
     User user;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_page_acivity_layout);
+        setContentView(R.layout.user_page_acivity_layout);
         Log.i(TAG, "onCreate: UserPageActivity");
 
         // initialize instances
         userDAO = UserRoomDB.getInstance(this).usersDAO();
-        comicsDAO = ComicsRoomDB.getInstance(this).comicsDAO();
         mainPageActivitySP = getSharedPreferences(MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
         mainPageActivitySPReceiver = getApplicationContext().getSharedPreferences(
                 MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
@@ -77,17 +62,12 @@ public class UserPageActivity extends AppCompatActivity {
         // initialize layout objects
         mainPageActivityLayoutUserNameText = findViewById(R.id.main_page_activity_layout_user_name_text_ID);
         mainPageActivityLayoutMenuButton = findViewById(R.id.main_page_activity_layout_menu_button_ID);
-        recyclerView = findViewById(R.id.comics_recycler_ID);
 
-        comicsList = comicsDAO.getAll();
         int loggedUserID = loginActivitySPReceiver.getInt("loggedUserID", -1);
         Log.d(TAG, "getInt(\"loggedUserID\", -1): " + loggedUserID);
         // set current user object as object from DAO
-        user = userDAO.getUserByID(loggedUserID);
+        user = userDAO.getAll().get(loggedUserID);
         mainPageActivityLayoutUserNameText.setText(user.getName());
-
-        setDefaultComics();
-        updateRecycler(comicsList);
 
         // load previously selected (or default) font
         changeFont(user.getFont());
@@ -180,29 +160,6 @@ public class UserPageActivity extends AppCompatActivity {
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
     }
-
-    private void updateRecycler(List<Comics> comicsList) {
-        Log.i(TAG, "updateRecycler: ");
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1, LinearLayoutManager.HORIZONTAL));
-        comicsListAdapter = new ComicsListAdapter(this, comicsList, comicsClickListener);
-        recyclerView.setAdapter(comicsListAdapter);
-    }
-
-    private final ComicsClickListener comicsClickListener = new ComicsClickListener() {
-        @Override
-        public void onClick(Comics comics) {
-            Log.i(TAG, "comicsClickListener: onClick: ");
-            Intent comicsClickListenerIntent = new Intent(UserPageActivity.this, ComicsPageActivity.class);
-            startActivity(comicsClickListenerIntent);
-        }
-
-        @Override
-        public void onLongClick(Comics comics, CardView cardView) {
-            Log.i(TAG, "comicsClickListener: onLongClick: ");
-            Toast.makeText(UserPageActivity.this, "onLongClick", Toast.LENGTH_SHORT).show();
-        }
-    };
 
     /**
      * Changes typeface (font) of selected menu item.
@@ -297,12 +254,5 @@ public class UserPageActivity extends AppCompatActivity {
 
         Log.d(TAG, "return typeface with: " + user.getFont() + " font");
         return typeface;
-    }
-
-    private void setDefaultComics() {
-        Log.i(TAG, "setDefaultComics: ");
-        String defaultComicsString = "Add new";
-        Comics comics = new Comics(defaultComicsString);
-        comicsDAO.insert(comics);
     }
 }

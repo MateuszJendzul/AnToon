@@ -12,6 +12,7 @@ import com.artiline.antoon.Database.Models.User;
 @Database(entities = {User.class}, version = 1, exportSchema = false)
 public abstract class UserRoomDB extends RoomDatabase {
     public abstract UserDAO usersDAO();
+
     private static UserRoomDB userRoomDB;
     private static final String DATABASE_NAME = "users";
 

@@ -1,15 +1,11 @@
 package com.artiline.antoon.Database.Models;
 
 import android.util.Log;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import com.artiline.antoon.Database.PrimaryKeyGenerator;
-import com.artiline.antoon.R;
 
 import java.io.Serializable;
 
@@ -17,7 +13,7 @@ import java.io.Serializable;
 public class Comics implements Serializable {
     private final static String TAG = "Comics";
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int ID = 0;
     @ColumnInfo(name = "comicsName")
     private String comicsName = "comicsName";
@@ -93,7 +89,6 @@ public class Comics implements Serializable {
     }
 
     public Comics(String comicsName) {
-        this.ID = PrimaryKeyGenerator.generateComicsPrimaryKey();
         this.comicsName = comicsName;
         Log.i(TAG, "Comics: constructor: " + comicsName);
     }

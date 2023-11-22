@@ -1,21 +1,16 @@
 package com.artiline.antoon.Database.Models;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.artiline.antoon.Database.PrimaryKeyGenerator;
-
 import java.io.Serializable;
 
 @Entity(tableName = "User")
 public class User implements Serializable {
-    private static final String TAG = "User";
-    @PrimaryKey
-    private int ID = 0;
+    @PrimaryKey()
+    private int userID;
     @ColumnInfo(name = "name")
     private String name = "Name";
     @ColumnInfo(name = "email")
@@ -27,12 +22,12 @@ public class User implements Serializable {
     @ColumnInfo(name = "font")
     private String font = "Default";
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
-    public int getID() {
-        return ID;
+    public int getUserID() {
+        return userID;
     }
 
     public String getName() {
@@ -75,29 +70,16 @@ public class User implements Serializable {
         this.font = font;
     }
 
-    public User() {
-        Log.i(TAG, "User: no args constructor:");
-    }
-
-    public User(String name, String email, String password) {
-        this.ID = PrimaryKeyGenerator.generateUserPrimaryKey();
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        Log.i(TAG, "User: constructor: " + "ID: " + getID() + " Name: " + getName() +
-                " Password: " + getPassword() + " Email: " + getEmail());
-    }
-
     @NonNull
     @Override
     public String toString() {
         return "User{" +
-                "ID=" + ID +
+                "ID=" + userID +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", userCreated=" + userCreated +
-                ", font='" + font + '\'' +
+                ", userCreated=" + userCreated + '\'' +
+                ", font='" + font +
                 '}';
     }
 }

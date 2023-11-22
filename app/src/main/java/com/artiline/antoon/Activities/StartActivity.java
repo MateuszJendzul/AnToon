@@ -69,8 +69,12 @@ public class StartActivity extends AppCompatActivity {
      * Creates admin profile with fixed variables properties, such as: name, email and password.
      */
     private void createAdmin() {
-        Log.i(TAG, "createAdmin: admin created");
-        User admin = new User("admin", "admin@admin.com", "admin");
+        Log.i(TAG, "createAdmin:");
+        User admin = new User();
+        admin.setUserID(0);
+        admin.setName("admin");
+        admin.setEmail("admin@email");
+        admin.setPassword("admin");
         userDAO.insert(admin);
     }
 }

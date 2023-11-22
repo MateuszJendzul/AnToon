@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (userDAO.getAll().isEmpty()) {
                     Toast.makeText(this, "List of Users is empty!",
                             Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Empty list, Check for Admin profile!");
+                    Log.e(TAG, "Empty list, check for Admin profile!");
 
                     // if int equals (or is bigger than) 0, launch intent and change page to UserPageActivity
                 } else if (loggedUserID >= 0) {
@@ -78,8 +78,8 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(loginActivityLayoutLoginButtonIntent);
 
                 } else {
-                    Log.e(TAG, "loggedUserID not found! ID is less than 0");
-                    Log.e(TAG, "Possibly loggedUserID() method returned -1 when no matching user was found");
+                    Log.e(TAG, "loggedUserID not found! ID equals, or is less than 0");
+                    Log.e(TAG, "Possibly loggedUserID() method returned 0 when no matching user was found");
                 }
 
             } else {
@@ -120,17 +120,20 @@ public class LoginActivity extends AppCompatActivity {
      * @return returns ID of matched User object
      */
     private int findUserID(String userName, String userPassword) {
-        Log.i(TAG, "loggedUser: ");
+        Log.i(TAG, "findUserID: ");
+
         for (int x = 0; x < userDAO.getAll().size(); x++) {
-            if (userName.equals(userDAO.getUserByID(x).getName())) {
-                if (userPassword.equals(userDAO.getUserByID(x).getPassword())) {
-                    Log.d(TAG, "Returning user: " + userDAO.getUserByID(x).getName()
-                            + " with ID of: " + userDAO.getUserByID(x).getID());
-                    return userDAO.getUserByID(x).getID();
+            if (userName.equals(userDAO.getAll().get(x).getName())) {
+                Log.d(TAG, "if: " + userName + " == " + userDAO.getAll().get(x).getName());
+                if (userPassword.equals(userDAO.getAll().get(x).getPassword())) {
+                    Log.d(TAG, "Returning user: " + userDAO.getAll().get(x).getName()
+                            + " with ID of: " + userDAO.getAll().get(x).getUserID());
+                    return userDAO.getAll().get(x).getUserID();
                 } else {
                     Log.d(TAG, "Passwords doesn't match!");
                     Toast.makeText(LoginActivity.this, "Passwords doesn't match!",
                             Toast.LENGTH_SHORT).show();
+                    return -1;
                 }
             }
         }
