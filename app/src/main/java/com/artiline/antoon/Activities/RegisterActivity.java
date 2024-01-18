@@ -69,7 +69,6 @@ public class RegisterActivity extends AppCompatActivity {
 
                 ID = registerActivitySPReceiver.getInt("ID", 1);
                 Log.d(TAG, "registerActivitySPReceiver.getInt(\"ID\" , 1)");
-                Log.e(TAG, "!!!!!!!!ID = " + ID);
 
                 // create User object using strings based on user input
                 User newUser = new User();
