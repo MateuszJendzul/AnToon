@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.artiline.antoon.Database.Models.Comics;
 import com.artiline.antoon.R;
 import com.artiline.antoon.Database.User.UserDAO;
 import com.artiline.antoon.Database.User.UserRoomDB;
@@ -28,12 +29,16 @@ import com.artiline.antoon.Database.AppFonts;
 import com.artiline.antoon.Database.CustomTypeFaceSpan;
 import com.artiline.antoon.Database.Models.User;
 
+import java.util.ArrayList;
+
 public class UserPageActivity extends AppCompatActivity {
     private static final String TAG = "UserPageActivity";
 
     // declare and initialize name strings
     public static final String MAIN_PAGE_ACTIVITY_EXTRA = "mainPageActivityExtra";
     public static final String LOGGED_ON_BOOL_EXTRA = "loggedOn";
+    // TODO created recently, create list for user to hold currently viewed series
+    private ArrayList<Comics> comicsList;
 
     // declare layout objects
     TextView mainPageActivityLayoutUserNameText;
@@ -50,6 +55,8 @@ public class UserPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_page_acivity_layout);
         Log.i(TAG, "onCreate: UserPageActivity");
+
+        comicsList = new ArrayList<>();
 
         // initialize instances
         userDAO = UserRoomDB.getInstance(this).usersDAO();
