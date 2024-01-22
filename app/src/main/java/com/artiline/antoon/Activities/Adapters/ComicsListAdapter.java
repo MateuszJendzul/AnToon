@@ -1,63 +1,65 @@
 package com.artiline.antoon.Activities.Adapters;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.artiline.antoon.Database.Comics.ComicsDAO;
-import com.artiline.antoon.Database.Comics.ComicsRoomDB;
-import com.artiline.antoon.Database.ComicsClickListener;
-
+import com.artiline.antoon.Database.Models.Comics;
 import com.artiline.antoon.R;
 
+import java.util.List;
 
-public class ComicsListAdapter extends RecyclerView.Adapter<ComicsViewHolder> {
+public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.ComicsViewHolder> {
     private static final String TAG = "ComicsListAdapter";
 
-    ComicsDAO comicsDAO;
-    Context context;
-    ComicsClickListener listener;
+    private List<Comics> comicsList;
 
-    public ComicsListAdapter(Context context, ComicsClickListener listener) {
+    public ComicsListAdapter(List<Comics> comicsList) {
         Log.i(TAG, "ComicsListAdapter: ");
-        this.context = context;
-        this.listener = listener;
+        this.comicsList = comicsList;
     }
 
     @NonNull
     @Override
     public ComicsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.i(TAG, "onCreateViewHolder: ");
-        return new ComicsViewHolder(LayoutInflater.from(parent.getContext()).inflate(
-                R.layout.comics_card_view, parent, false));
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comics_card_view, parent, false);
+        return new ComicsViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ComicsViewHolder holder, int position) {
         Log.i(TAG, "onBindViewHolder: ");
-        comicsDAO = ComicsRoomDB.getInstance(context).comicsDAO();
-        holder.comicsPicture.setImageResource(comicsDAO.getComicsByID(position).getComicsPicture());
-        holder.chaptersCount.setText(comicsDAO.getComicsByID(position).getAtChapter());
-        holder.comicsName.setText(comicsDAO.getComicsByID(position).getComicsName());
+        Comics currentComics = comicsList.get(position);
+        // Bind your data to the CardView elements here
+        holder.comicsPicture.setImageResource(currentComics.getComicsPicture());
+        holder.chaptersCount.setText(currentComics.getAtChapter());
+        holder.comicsName.setText(currentComics.getComicsName());
 
-        holder.comicsCardView.setOnClickListener(v -> listener.onClick(
-                comicsDAO.getComicsByID(holder.getAdapterPosition())));
-
-        holder.comicsCardView.setOnLongClickListener(v -> {
-            listener.onLongClick(
-                    comicsDAO.getComicsByID(holder.getAdapterPosition()), holder.comicsCardView);
-            return true;
-        });
     }
 
     @Override
     public int getItemCount() {
-        Log.i(TAG, "getItemCount: " + comicsDAO.getAll().size());
-        return comicsDAO.getAll().size();
+        Log.i(TAG, "getItemCount: ");
+        return comicsList.size();
     }
 
+    static class ComicsViewHolder extends RecyclerView.ViewHolder {
+        TextView comicsName, chaptersCount;
+        ImageView comicsPicture;
+
+        public ComicsViewHolder(@NonNull View itemView) {
+            super(itemView);
+            comicsPicture = itemView.findViewById(R.id.comicsPictureID);
+            comicsName = itemView.findViewById(R.id.comicsNameID);
+            chaptersCount = itemView.findViewById(R.id.chaptersCountID);
+
+        }
+    }
 }

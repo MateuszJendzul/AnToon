@@ -19,8 +19,13 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.artiline.antoon.Activities.Adapters.ComicsListAdapter;
+import com.artiline.antoon.Database.Comics.ComicsDAO;
+import com.artiline.antoon.Database.Comics.ComicsRoomDB;
+import com.artiline.antoon.Database.Models.Comics;
 import com.artiline.antoon.R;
 import com.artiline.antoon.Database.User.UserDAO;
 import com.artiline.antoon.Database.User.UserRoomDB;
@@ -28,12 +33,16 @@ import com.artiline.antoon.Database.AppFonts;
 import com.artiline.antoon.Database.CustomTypeFaceSpan;
 import com.artiline.antoon.Database.Models.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserPageActivity extends AppCompatActivity {
     private static final String TAG = "UserPageActivity";
 
     // declare and initialize name strings
     public static final String MAIN_PAGE_ACTIVITY_EXTRA = "mainPageActivityExtra";
     public static final String LOGGED_ON_BOOL_EXTRA = "loggedOn";
+    // TODO created recently, create list for user to hold currently viewed series
 
     // declare layout objects
     TextView mainPageActivityLayoutUserNameText;
@@ -43,6 +52,7 @@ public class UserPageActivity extends AppCompatActivity {
     // declare instances
     SharedPreferences mainPageActivitySP, mainPageActivitySPReceiver, loginActivitySPReceiver;
     UserDAO userDAO;
+    ComicsDAO comicsDAO;
     User user;
 
     @Override
@@ -58,6 +68,13 @@ public class UserPageActivity extends AppCompatActivity {
                 MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
         loginActivitySPReceiver = getApplicationContext().getSharedPreferences(
                 LoginActivity.LOGIN_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
+
+        comicsDAO = ComicsRoomDB.getInstance(this).comicsDAO();
+        List<Comics> comicsList = comicsDAO.getAll();
+        recyclerView = findViewById(R.id.comics_recycler_ID);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ComicsListAdapter comicsListAdapter = new ComicsListAdapter(comicsList);
+        recyclerView.setAdapter(comicsListAdapter);
 
         // initialize layout objects
         mainPageActivityLayoutUserNameText = findViewById(R.id.main_page_activity_layout_user_name_text_ID);
