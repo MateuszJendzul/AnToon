@@ -20,9 +20,9 @@ public class ComicsViewHolder extends RecyclerView.ViewHolder {
     public ComicsViewHolder(@NonNull View itemView) {
         super(itemView);
         Log.i(TAG, "ComicsViewHolder: ");
-        comicsPicture = itemView.findViewById(R.id.comicsPictureID);
-        comicsCardView = itemView.findViewById(R.id.comicsCardViewID);
-        comicsName = itemView.findViewById(R.id.comicsNameID);
-        chaptersCount = itemView.findViewById(R.id.chaptersCountID);
+        comicsPicture = itemView.findViewById(R.id.comics_picture_ID);
+        comicsCardView = itemView.findViewById(R.id.comics_card_view_ID);
+        comicsName = itemView.findViewById(R.id.comics_name_ID);
+        chaptersCount = itemView.findViewById(R.id.chapters_count_ID);
     }
 }

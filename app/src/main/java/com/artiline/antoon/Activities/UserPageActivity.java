@@ -11,6 +11,7 @@ import android.text.SpannableString;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.artiline.antoon.Activities.Adapters.ComicsListAdapter;
 import com.artiline.antoon.Database.Comics.ComicsDAO;
@@ -33,7 +35,6 @@ import com.artiline.antoon.Database.AppFonts;
 import com.artiline.antoon.Database.CustomTypeFaceSpan;
 import com.artiline.antoon.Database.Models.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserPageActivity extends AppCompatActivity {
@@ -46,13 +47,14 @@ public class UserPageActivity extends AppCompatActivity {
 
     // declare layout objects
     TextView mainPageActivityLayoutUserNameText;
-    Button mainPageActivityLayoutMenuButton;
-    RecyclerView recyclerView;
+    Button mainPageActivityLayoutMenuButton, userPageActivityLayoutAddButton;
+    RecyclerView comicsRecycler;
 
     // declare instances
     SharedPreferences mainPageActivitySP, mainPageActivitySPReceiver, loginActivitySPReceiver;
     UserDAO userDAO;
     ComicsDAO comicsDAO;
+    List<Comics> comicsList;
     User user;
 
     @Override
@@ -63,36 +65,37 @@ public class UserPageActivity extends AppCompatActivity {
 
         // initialize instances
         userDAO = UserRoomDB.getInstance(this).usersDAO();
+        comicsDAO = ComicsRoomDB.getInstance(this).comicsDAO();
         mainPageActivitySP = getSharedPreferences(MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
         mainPageActivitySPReceiver = getApplicationContext().getSharedPreferences(
                 MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
         loginActivitySPReceiver = getApplicationContext().getSharedPreferences(
                 LoginActivity.LOGIN_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
 
-        comicsDAO = ComicsRoomDB.getInstance(this).comicsDAO();
-        List<Comics> comicsList = comicsDAO.getAll();
-        recyclerView = findViewById(R.id.comics_recycler_ID);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ComicsListAdapter comicsListAdapter = new ComicsListAdapter(comicsList);
-        recyclerView.setAdapter(comicsListAdapter);
-
         // initialize layout objects
-        mainPageActivityLayoutUserNameText = findViewById(R.id.main_page_activity_layout_user_name_text_ID);
-        mainPageActivityLayoutMenuButton = findViewById(R.id.main_page_activity_layout_menu_button_ID);
+        mainPageActivityLayoutUserNameText = findViewById(R.id.user_page_activity_layout_user_name_text_ID);
+        mainPageActivityLayoutMenuButton = findViewById(R.id.user_page_activity_layout_menu_button_ID);
+        userPageActivityLayoutAddButton = findViewById(R.id.user_page_activity_layout_add_button_ID);
+        comicsRecycler = findViewById(R.id.comics_recycler_ID);
 
+        // load logged user data
         int loggedUserID = loginActivitySPReceiver.getInt("loggedUserID", -1);
         Log.d(TAG, "getInt(\"loggedUserID\", -1): " + loggedUserID);
         // set current user object as object from DAO
         user = userDAO.getAll().get(loggedUserID);
         mainPageActivityLayoutUserNameText.setText(user.getName());
 
-        // load previously selected (or default) font
+        // update user comics list
+        comicsList = comicsDAO.getAll();
+        updateComicsViewRecycler(comicsList);
+
+        // load previously selected (or default) user font
         changeFont(user.getFont());
         mainPageActivitySP.edit().putBoolean(LOGGED_ON_BOOL_EXTRA, true).apply();
         Log.d(TAG, "putBoolean(LOGGED_ON_BOOL_EXTRA, true)");
 
         mainPageActivityLayoutMenuButton.setOnClickListener(mainPageActivityLayoutMenuButtonView -> {
-            Log.i(TAG, "onClick: main_page_activity_layout_menu_button");
+            Log.i(TAG, "onClick: mainPageActivityLayoutMenuButton");
             PopupMenu popupMenu = new PopupMenu(UserPageActivity.this, mainPageActivityLayoutMenuButtonView);
             popupMenu.getMenuInflater().inflate(R.menu.user_pop_up_menu, popupMenu.getMenu());
 
@@ -163,6 +166,15 @@ public class UserPageActivity extends AppCompatActivity {
             popupMenu.show();
         });
 
+        userPageActivityLayoutAddButton.setOnClickListener(v -> {
+            Log.i(TAG, "onClick: userPageActivityLayoutAddButton");
+
+            Comics newComics = new Comics();
+            newComics.setComicsName("Comics Name");
+            comicsDAO.insert(newComics);
+            updateComicsViewRecycler(comicsList);
+        });
+
         // overrides default phone back button
         // before closing activity, sends boolean SP value telling StartActivity that user logged out
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -176,6 +188,15 @@ public class UserPageActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
+    // TODO add desc.
+    private void updateComicsViewRecycler(List<Comics> comicsList) {
+        Log.i(TAG, "updateComicsViewRecycler: ");
+        comicsRecycler.setLayoutManager(new StaggeredGridLayoutManager(
+                1, LinearLayoutManager.HORIZONTAL));
+        ComicsListAdapter comicsListAdapter = new ComicsListAdapter(UserPageActivity.this, comicsList);
+        comicsRecycler.setAdapter(comicsListAdapter);
     }
 
     /**

@@ -9,16 +9,21 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/comics_recycler_ID"
-        android:layout_marginTop="130dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="130dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/gray"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/main_page_activity_layout_user_name_text_ID"
+        android:id="@+id/user_page_activity_layout_user_name_text_ID"
         style="@style/MediumTextAppearance"
         android:layout_marginTop="80dp"
         android:text="user_name"
@@ -29,7 +34,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/main_page_activity_layout_menu_button_ID"
+        android:id="@+id/user_page_activity_layout_menu_button_ID"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="5dp"
@@ -43,6 +48,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/user_page_activity_layout_add_button_ID"
+        style="@style/SmallButtonAppearance"
+        android:text="add"
+        app:layout_constraintBottom_toTopOf="@+id/comics_recycler_ID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.122"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.548" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

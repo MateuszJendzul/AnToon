@@ -1,5 +1,6 @@
 package com.artiline.antoon.Activities.Adapters;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +16,14 @@ import com.artiline.antoon.R;
 
 import java.util.List;
 
-public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.ComicsViewHolder> {
+public class ComicsListAdapter extends RecyclerView.Adapter<ComicsViewHolder> {
     private static final String TAG = "ComicsListAdapter";
+    Context context;
+    List<Comics> comicsList;
 
-    private List<Comics> comicsList;
-
-    public ComicsListAdapter(List<Comics> comicsList) {
+    public ComicsListAdapter(Context context, List<Comics> comicsList) {
         Log.i(TAG, "ComicsListAdapter: ");
+        this.context = context;
         this.comicsList = comicsList;
     }
 
@@ -48,18 +50,5 @@ public class ComicsListAdapter extends RecyclerView.Adapter<ComicsListAdapter.Co
     public int getItemCount() {
         Log.i(TAG, "getItemCount: ");
         return comicsList.size();
-    }
-
-    static class ComicsViewHolder extends RecyclerView.ViewHolder {
-        TextView comicsName, chaptersCount;
-        ImageView comicsPicture;
-
-        public ComicsViewHolder(@NonNull View itemView) {
-            super(itemView);
-            comicsPicture = itemView.findViewById(R.id.comicsPictureID);
-            comicsName = itemView.findViewById(R.id.comicsNameID);
-            chaptersCount = itemView.findViewById(R.id.chaptersCountID);
-
-        }
     }
 }
