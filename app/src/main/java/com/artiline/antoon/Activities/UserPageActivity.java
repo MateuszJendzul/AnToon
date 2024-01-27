@@ -55,6 +55,7 @@ public class UserPageActivity extends AppCompatActivity {
     UserDAO userDAO;
     ComicsDAO comicsDAO;
     List<Comics> comicsList;
+    int comicsListSize = 0;
     User user;
 
     @Override
@@ -87,6 +88,7 @@ public class UserPageActivity extends AppCompatActivity {
 
         // update user comics list
         comicsList = comicsDAO.getAll();
+        comicsListSize = comicsList.size();
         updateComicsViewRecycler(comicsList);
 
         // load previously selected (or default) user font
@@ -171,6 +173,8 @@ public class UserPageActivity extends AppCompatActivity {
 
             Comics newComics = new Comics();
             newComics.setComicsName("Comics Name");
+            newComics.setComicsPicture(R.drawable.mahwa_pic_1);
+            newComics.setWebLink("WebLing.com");
             comicsDAO.insert(newComics);
             updateComicsViewRecycler(comicsList);
         });
@@ -193,6 +197,13 @@ public class UserPageActivity extends AppCompatActivity {
     // TODO add desc.
     private void updateComicsViewRecycler(List<Comics> comicsList) {
         Log.i(TAG, "updateComicsViewRecycler: ");
+
+        // DEBUG
+        for (int i = 0; i < comicsListSize; i++) {
+            Log.i(TAG, "COMICS NAMES:");
+            Log.i(TAG, "" + comicsList.get(i).getComicsName() + "\n");
+        }
+
         comicsRecycler.setLayoutManager(new StaggeredGridLayoutManager(
                 1, LinearLayoutManager.HORIZONTAL));
         ComicsListAdapter comicsListAdapter = new ComicsListAdapter(UserPageActivity.this, comicsList);

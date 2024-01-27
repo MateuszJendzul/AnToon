@@ -29,7 +29,7 @@
             style="@style/SmallTextAppearance"
             android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:background="@color/black"
+            android:background="@color/transparent"
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:text="@string/comicsNameString"
