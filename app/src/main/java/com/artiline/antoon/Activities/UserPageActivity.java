@@ -11,7 +11,6 @@ import android.text.SpannableString;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -24,7 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.artiline.antoon.Activities.Adapters.ComicsListAdapter;
+import com.artiline.antoon.Database.Adapters.ComicsAdapter;
 import com.artiline.antoon.Database.Comics.ComicsDAO;
 import com.artiline.antoon.Database.Comics.ComicsRoomDB;
 import com.artiline.antoon.Database.Models.Comics;
@@ -87,9 +86,7 @@ public class UserPageActivity extends AppCompatActivity {
         mainPageActivityLayoutUserNameText.setText(user.getName());
 
         // update user comics list
-        comicsList = comicsDAO.getAll();
-        comicsListSize = comicsList.size();
-        updateComicsViewRecycler(comicsList);
+        updateComicsViewRecycler();
 
         // load previously selected (or default) user font
         changeFont(user.getFont());
@@ -168,17 +165,6 @@ public class UserPageActivity extends AppCompatActivity {
             popupMenu.show();
         });
 
-        userPageActivityLayoutAddButton.setOnClickListener(v -> {
-            Log.i(TAG, "onClick: userPageActivityLayoutAddButton");
-
-            Comics newComics = new Comics();
-            newComics.setComicsName("Comics Name");
-            newComics.setComicsPicture(R.drawable.mahwa_pic_1);
-            newComics.setWebLink("WebLing.com");
-            comicsDAO.insert(newComics);
-            updateComicsViewRecycler(comicsList);
-        });
-
         // overrides default phone back button
         // before closing activity, sends boolean SP value telling StartActivity that user logged out
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
@@ -192,22 +178,41 @@ public class UserPageActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
+
+        userPageActivityLayoutAddButton.setOnClickListener(v -> {
+            Log.i(TAG, "onClick: userPageActivityLayoutAddButton");
+
+            Comics newComics = new Comics();
+            newComics.setComicsName("comicsName");
+            newComics.setComicsPicture(0);
+            newComics.setWebLink("webLink");
+            newComics.setRating(0);
+            newComics.setAtChapter(0);
+            newComics.setNewestChapter(0);
+            Log.i(TAG, "COMIC: " + newComics.getComicsName());
+            comicsDAO.insert(newComics);
+            updateComicsViewRecycler();
+        });
     }
 
     // TODO add desc.
-    private void updateComicsViewRecycler(List<Comics> comicsList) {
+    private void updateComicsViewRecycler() {
         Log.i(TAG, "updateComicsViewRecycler: ");
+
+        comicsList = comicsDAO.getAll();
+        comicsListSize = comicsList.size();
 
         // DEBUG
         for (int i = 0; i < comicsListSize; i++) {
-            Log.i(TAG, "COMICS NAMES:");
-            Log.i(TAG, "" + comicsList.get(i).getComicsName() + "\n");
+            Log.i(TAG, "COMICS ON LIST: ");
+            Log.i(TAG, "COMICS NAME: " + comicsList.get(i).getComicsName() + " ID: " +
+                    comicsList.get(i).getID() + " \n");
         }
 
-        comicsRecycler.setLayoutManager(new StaggeredGridLayoutManager(
-                1, LinearLayoutManager.HORIZONTAL));
-        ComicsListAdapter comicsListAdapter = new ComicsListAdapter(UserPageActivity.this, comicsList);
-        comicsRecycler.setAdapter(comicsListAdapter);
+        comicsRecycler.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        ComicsAdapter comicsAdapter = new ComicsAdapter(comicsList);
+        comicsRecycler.setAdapter(comicsAdapter);
     }
 
     /**

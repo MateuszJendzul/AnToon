@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 
 import com.artiline.antoon.Database.Models.Comics;
 
-@Database(entities = {Comics.class}, version = 1, exportSchema = false)
+@Database(entities = {Comics.class}, version = 2, exportSchema = false)
 public abstract class ComicsRoomDB extends RoomDatabase {
     public abstract ComicsDAO comicsDAO();
     private static ComicsRoomDB comicsRoomDB;
