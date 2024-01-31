@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/comicsCardViewWidth"
     android:layout_height="wrap_content"
-    android:layout_margin="0dp"
+    android:foreground="@drawable/card_view_foreground"
     app:cardBackgroundColor="@color/darker_background_color">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/comicsCardViewHeight">
 
         <ImageView
             android:id="@+id/comics_picture_ID"
-            android:layout_width="140dp"
-            android:layout_height="240dp"
-            android:background="@drawable/manhwa_pic"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/gray"
             android:contentDescription="@string/comicsPictureDescriptionString"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -26,8 +26,8 @@
         <TextView
             android:id="@+id/comics_name_ID"
             style="@style/SmallTextAppearance"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
             android:background="@color/black"
             android:scrollHorizontally="true"
             android:singleLine="true"
@@ -40,12 +40,9 @@
         <TextView
             android:id="@+id/newest_chapter_ID"
             style="@style/SmallTextAppearance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
             android:background="@drawable/chapter_count_background"
-            android:gravity="center"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
             android:text="@string/newestChapter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -57,12 +54,9 @@
         <TextView
             android:id="@+id/at_chapter_ID"
             style="@style/SmallTextAppearance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
             android:background="@drawable/chapter_count_background"
-            android:gravity="center"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
             android:text="@string/atChapter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

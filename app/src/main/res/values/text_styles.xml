@@ -11,8 +11,9 @@
         <item name="singleLine">true</item>
         <item name="android:shadowColor">@color/transparent</item>
         <item name="android:shadowDx">22</item>
+        <item name="android:shadowDy">22</item>
         <item name="android:shadowRadius">1</item>`
-        <item name="android:padding">4dp</item>
+        <item name="android:paddingStart">4dp</item>
         <item name="android:paddingEnd">8dp</item>
         <item name="android:gravity">center</item>
     </style>
@@ -28,7 +29,7 @@
         <item name="android:shadowColor">@color/transparent</item>
         <item name="android:shadowDx">22</item>
         <item name="android:shadowRadius">1</item>`
-        <item name="android:padding">4dp</item>
+        <item name="android:paddingStart">4dp</item>
         <item name="android:paddingEnd">8dp</item>
         <item name="android:gravity">center</item>
     </style>
@@ -44,7 +45,18 @@
         <item name="android:shadowColor">@color/transparent</item>
         <item name="android:shadowDx">22</item>
         <item name="android:shadowRadius">1</item>
-        <item name="android:padding">4dp</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="CenterWithShadow" parent="TextAppearance.AppCompat">
+        <item name="android:background">@color/transparent</item>
+        <item name="singleLine">true</item>
+        <item name="android:shadowColor">@color/transparent</item>
+        <item name="android:shadowDx">22</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:paddingStart">4dp</item>
         <item name="android:paddingEnd">8dp</item>
         <item name="android:gravity">center</item>
     </style>

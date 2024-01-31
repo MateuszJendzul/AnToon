@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.artiline.antoon.Database.Adapters.ComicsAdapter;
 import com.artiline.antoon.Database.Comics.ComicsDAO;
@@ -46,11 +45,13 @@ public class UserPageActivity extends AppCompatActivity {
 
     // declare layout objects
     TextView mainPageActivityLayoutUserNameText;
-    Button mainPageActivityLayoutMenuButton, userPageActivityLayoutAddButton;
+    Button mainPageActivityLayoutMenuButton, userPageActivityLayoutAddButton, userPageActivityLayoutDoubleArrowLeftButton,
+            userPageActivityLayoutDoubleArrowRightButton;
     RecyclerView comicsRecycler;
 
     // declare instances
     SharedPreferences mainPageActivitySP, mainPageActivitySPReceiver, loginActivitySPReceiver;
+    ComicsAdapter comicsAdapter;
     UserDAO userDAO;
     ComicsDAO comicsDAO;
     List<Comics> comicsList;
@@ -76,7 +77,10 @@ public class UserPageActivity extends AppCompatActivity {
         mainPageActivityLayoutUserNameText = findViewById(R.id.user_page_activity_layout_user_name_text_ID);
         mainPageActivityLayoutMenuButton = findViewById(R.id.user_page_activity_layout_menu_button_ID);
         userPageActivityLayoutAddButton = findViewById(R.id.user_page_activity_layout_add_button_ID);
-        comicsRecycler = findViewById(R.id.comics_recycler_ID);
+        userPageActivityLayoutDoubleArrowLeftButton = findViewById(R.id.user_page_activity_layout_double_arrow_left_button_ID);
+        userPageActivityLayoutDoubleArrowRightButton = findViewById(R.id.user_page_activity_layout_double_arrow_right_button_ID);
+        comicsRecycler = findViewById(R.id.user_page_activity_layout_comics_recycler_ID);
+        comicsAdapter = (ComicsAdapter) comicsRecycler.getAdapter();
 
         // load logged user data
         int loggedUserID = loginActivitySPReceiver.getInt("loggedUserID", -1);
@@ -184,7 +188,7 @@ public class UserPageActivity extends AppCompatActivity {
 
             Comics newComics = new Comics();
             newComics.setComicsName("comicsName");
-            newComics.setComicsPicture(0);
+            newComics.setComicsPicture(R.drawable.default_comics_pic_1);
             newComics.setWebLink("webLink");
             newComics.setRating(0);
             newComics.setAtChapter(0);
@@ -192,6 +196,25 @@ public class UserPageActivity extends AppCompatActivity {
             Log.i(TAG, "COMIC: " + newComics.getComicsName());
             comicsDAO.insert(newComics);
             updateComicsViewRecycler();
+        });
+
+        userPageActivityLayoutDoubleArrowLeftButton.setOnClickListener(v -> {
+            Log.i(TAG, "onClick: userPageActivityLayoutDoubleArrowLeftButton"
+                    + "\nScrolling to the start of the list");
+
+            if (comicsAdapter != null && comicsAdapter.getItemCount() > 0) {
+                comicsRecycler.scrollToPosition(0);
+            }
+        });
+
+        userPageActivityLayoutDoubleArrowRightButton.setOnClickListener(v -> {
+            Log.i(TAG, "onClick: userPageActivityLayoutDoubleArrowRightButton"
+                    + "\nScrolling to the end of the list");
+
+            if (comicsAdapter != null && comicsAdapter.getItemCount() > 4) {
+                comicsRecycler.scrollToPosition(comicsAdapter.getItemCount() - 1);
+
+            }
         });
     }
 

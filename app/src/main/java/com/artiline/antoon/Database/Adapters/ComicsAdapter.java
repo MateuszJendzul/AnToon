@@ -1,5 +1,6 @@
 package com.artiline.antoon.Database.Adapters;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,10 +29,18 @@ public class ComicsAdapter extends RecyclerView.Adapter<ComicsViewHolder> {
     public void onBindViewHolder(@NonNull ComicsViewHolder holder, int position) {
         Log.i(TAG, "onBindViewHolder: ");
         Comics currentComics = comicsList.get(position);
+        Context context = holder.itemView.getContext();
+
+        // Retrieve dimensions from dimens.xml
+        int targetWidth = (int) context.getResources().getDimension(R.dimen.comicsCardViewWidth);
+        int targetHeight = (int) context.getResources().getDimension(R.dimen.comicsCardViewHeight);
+
 
         // Bind your data to the CardView elements here
         Picasso.get().load(currentComics.getComicsPicture())
-                .placeholder(R.drawable.mahwa_pic_1)
+                .resize(targetWidth, targetHeight)
+                .centerCrop()
+                .placeholder(R.drawable.default_comics_pic)
                 .error(R.drawable.antoon_wallpaper)
                 .into(holder.comicsPicture);
         holder.atChapter.setText(String.valueOf(currentComics.getAtChapter()));
