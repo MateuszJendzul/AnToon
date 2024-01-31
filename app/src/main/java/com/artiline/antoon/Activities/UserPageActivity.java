@@ -22,7 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.artiline.antoon.Activities.Adapters.ComicsListAdapter;
+import com.artiline.antoon.Database.Adapters.ComicsAdapter;
 import com.artiline.antoon.Database.Comics.ComicsDAO;
 import com.artiline.antoon.Database.Comics.ComicsRoomDB;
 import com.artiline.antoon.Database.Models.Comics;
@@ -33,7 +33,6 @@ import com.artiline.antoon.Database.AppFonts;
 import com.artiline.antoon.Database.CustomTypeFaceSpan;
 import com.artiline.antoon.Database.Models.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserPageActivity extends AppCompatActivity {
@@ -46,13 +45,17 @@ public class UserPageActivity extends AppCompatActivity {
 
     // declare layout objects
     TextView mainPageActivityLayoutUserNameText;
-    Button mainPageActivityLayoutMenuButton;
-    RecyclerView recyclerView;
+    Button mainPageActivityLayoutMenuButton, userPageActivityLayoutAddButton, userPageActivityLayoutDoubleArrowLeftButton,
+            userPageActivityLayoutDoubleArrowRightButton;
+    RecyclerView comicsRecycler;
 
     // declare instances
     SharedPreferences mainPageActivitySP, mainPageActivitySPReceiver, loginActivitySPReceiver;
+    ComicsAdapter comicsAdapter;
     UserDAO userDAO;
     ComicsDAO comicsDAO;
+    List<Comics> comicsList;
+    int comicsListSize = 0;
     User user;
 
     @Override
@@ -63,36 +66,39 @@ public class UserPageActivity extends AppCompatActivity {
 
         // initialize instances
         userDAO = UserRoomDB.getInstance(this).usersDAO();
+        comicsDAO = ComicsRoomDB.getInstance(this).comicsDAO();
         mainPageActivitySP = getSharedPreferences(MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
         mainPageActivitySPReceiver = getApplicationContext().getSharedPreferences(
                 MAIN_PAGE_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
         loginActivitySPReceiver = getApplicationContext().getSharedPreferences(
                 LoginActivity.LOGIN_ACTIVITY_EXTRA, Context.MODE_PRIVATE);
 
-        comicsDAO = ComicsRoomDB.getInstance(this).comicsDAO();
-        List<Comics> comicsList = comicsDAO.getAll();
-        recyclerView = findViewById(R.id.comics_recycler_ID);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ComicsListAdapter comicsListAdapter = new ComicsListAdapter(comicsList);
-        recyclerView.setAdapter(comicsListAdapter);
-
         // initialize layout objects
-        mainPageActivityLayoutUserNameText = findViewById(R.id.main_page_activity_layout_user_name_text_ID);
-        mainPageActivityLayoutMenuButton = findViewById(R.id.main_page_activity_layout_menu_button_ID);
+        mainPageActivityLayoutUserNameText = findViewById(R.id.user_page_activity_layout_user_name_text_ID);
+        mainPageActivityLayoutMenuButton = findViewById(R.id.user_page_activity_layout_menu_button_ID);
+        userPageActivityLayoutAddButton = findViewById(R.id.user_page_activity_layout_add_button_ID);
+        userPageActivityLayoutDoubleArrowLeftButton = findViewById(R.id.user_page_activity_layout_double_arrow_left_button_ID);
+        userPageActivityLayoutDoubleArrowRightButton = findViewById(R.id.user_page_activity_layout_double_arrow_right_button_ID);
+        comicsRecycler = findViewById(R.id.user_page_activity_layout_comics_recycler_ID);
+        comicsAdapter = (ComicsAdapter) comicsRecycler.getAdapter();
 
+        // load logged user data
         int loggedUserID = loginActivitySPReceiver.getInt("loggedUserID", -1);
         Log.d(TAG, "getInt(\"loggedUserID\", -1): " + loggedUserID);
         // set current user object as object from DAO
         user = userDAO.getAll().get(loggedUserID);
         mainPageActivityLayoutUserNameText.setText(user.getName());
 
-        // load previously selected (or default) font
+        // update user comics list
+        updateComicsViewRecycler();
+
+        // load previously selected (or default) user font
         changeFont(user.getFont());
         mainPageActivitySP.edit().putBoolean(LOGGED_ON_BOOL_EXTRA, true).apply();
         Log.d(TAG, "putBoolean(LOGGED_ON_BOOL_EXTRA, true)");
 
         mainPageActivityLayoutMenuButton.setOnClickListener(mainPageActivityLayoutMenuButtonView -> {
-            Log.i(TAG, "onClick: main_page_activity_layout_menu_button");
+            Log.i(TAG, "onClick: mainPageActivityLayoutMenuButton");
             PopupMenu popupMenu = new PopupMenu(UserPageActivity.this, mainPageActivityLayoutMenuButtonView);
             popupMenu.getMenuInflater().inflate(R.menu.user_pop_up_menu, popupMenu.getMenu());
 
@@ -176,6 +182,60 @@ public class UserPageActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
+
+        userPageActivityLayoutAddButton.setOnClickListener(v -> {
+            Log.i(TAG, "onClick: userPageActivityLayoutAddButton");
+
+            Comics newComics = new Comics();
+            newComics.setComicsName("comicsName");
+            newComics.setComicsPicture(R.drawable.default_comics_pic_1);
+            newComics.setWebLink("webLink");
+            newComics.setRating(0);
+            newComics.setAtChapter(0);
+            newComics.setNewestChapter(0);
+            Log.i(TAG, "COMIC: " + newComics.getComicsName());
+            comicsDAO.insert(newComics);
+            updateComicsViewRecycler();
+        });
+
+        userPageActivityLayoutDoubleArrowLeftButton.setOnClickListener(v -> {
+            Log.i(TAG, "onClick: userPageActivityLayoutDoubleArrowLeftButton"
+                    + "\nScrolling to the start of the list");
+
+            if (comicsAdapter != null && comicsAdapter.getItemCount() > 0) {
+                comicsRecycler.scrollToPosition(0);
+            }
+        });
+
+        userPageActivityLayoutDoubleArrowRightButton.setOnClickListener(v -> {
+            Log.i(TAG, "onClick: userPageActivityLayoutDoubleArrowRightButton"
+                    + "\nScrolling to the end of the list");
+
+            if (comicsAdapter != null && comicsAdapter.getItemCount() > 4) {
+                comicsRecycler.scrollToPosition(comicsAdapter.getItemCount() - 1);
+
+            }
+        });
+    }
+
+    // TODO add desc.
+    private void updateComicsViewRecycler() {
+        Log.i(TAG, "updateComicsViewRecycler: ");
+
+        comicsList = comicsDAO.getAll();
+        comicsListSize = comicsList.size();
+
+        // DEBUG
+        for (int i = 0; i < comicsListSize; i++) {
+            Log.i(TAG, "COMICS ON LIST: ");
+            Log.i(TAG, "COMICS NAME: " + comicsList.get(i).getComicsName() + " ID: " +
+                    comicsList.get(i).getID() + " \n");
+        }
+
+        comicsRecycler.setLayoutManager(
+                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        ComicsAdapter comicsAdapter = new ComicsAdapter(comicsList);
+        comicsRecycler.setAdapter(comicsAdapter);
     }
 
     /**

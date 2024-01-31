@@ -8,17 +8,21 @@
     tools:ignore="HardcodedText, TextContrastCheck">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/comics_recycler_ID"
-        android:layout_marginTop="130dp"
+        android:id="@+id/user_page_activity_layout_comics_recycler_ID"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="@dimen/comicsCardViewHeight"
+        android:layout_marginTop="130dp"
+        android:background="@color/gray"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/main_page_activity_layout_user_name_text_ID"
+        android:id="@+id/user_page_activity_layout_user_name_text_ID"
         style="@style/MediumTextAppearance"
         android:layout_marginTop="80dp"
         android:text="user_name"
@@ -29,7 +33,7 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/main_page_activity_layout_menu_button_ID"
+        android:id="@+id/user_page_activity_layout_menu_button_ID"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="5dp"
@@ -42,6 +46,43 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/user_page_activity_layout_add_button_ID"
+        style="@style/SmallButtonAppearance"
+        android:text="add"
+        app:layout_constraintBottom_toTopOf="@+id/user_page_activity_layout_comics_recycler_ID"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.122"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.548" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/user_page_activity_layout_double_arrow_left_button_ID"
+        android:layout_width="@dimen/iccDoubleArrowWidth"
+        android:layout_height="@dimen/iccDoubleArrowHeight"
+        android:layout_marginTop="75dp"
+        android:background="@drawable/ic_double_arrow_left"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/user_page_activity_layout_comics_recycler_ID"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/user_page_activity_layout_double_arrow_right_button_ID"
+        android:layout_width="@dimen/iccDoubleArrowWidth"
+        android:layout_height="@dimen/iccDoubleArrowHeight"
+        android:layout_marginTop="75dp"
+        android:background="@drawable/ic_double_arrow_right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/user_page_activity_layout_comics_recycler_ID"
         app:layout_constraintVertical_bias="0.0" />
 
 

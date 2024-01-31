@@ -88,11 +88,6 @@ public class Comics implements Serializable {
         Log.i(TAG, "Comics: no args constructor");
     }
 
-    public Comics(String comicsName) {
-        this.comicsName = comicsName;
-        Log.i(TAG, "Comics: constructor: " + comicsName);
-    }
-
     @NonNull
     @Override
     public String toString() {
