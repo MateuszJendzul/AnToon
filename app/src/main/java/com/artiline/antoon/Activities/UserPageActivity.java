@@ -55,6 +55,7 @@ public class UserPageActivity extends AppCompatActivity {
     UserDAO userDAO;
     ComicsDAO comicsDAO;
     List<Comics> comicsList;
+    LinearLayoutManager layoutManager;
     int comicsListSize = 0;
     User user;
 
@@ -211,7 +212,7 @@ public class UserPageActivity extends AppCompatActivity {
             Log.i(TAG, "onClick: userPageActivityLayoutDoubleArrowRightButton"
                     + "\nScrolling to the end of the list");
 
-            if (comicsAdapter != null && comicsAdapter.getItemCount() > 4) {
+            if (comicsAdapter != null && comicsAdapter.getItemCount() > 0) {
                 comicsRecycler.scrollToPosition(comicsAdapter.getItemCount() - 1);
 
             }
@@ -225,15 +226,8 @@ public class UserPageActivity extends AppCompatActivity {
         comicsList = comicsDAO.getAll();
         comicsListSize = comicsList.size();
 
-        // DEBUG
-        for (int i = 0; i < comicsListSize; i++) {
-            Log.i(TAG, "COMICS ON LIST: ");
-            Log.i(TAG, "COMICS NAME: " + comicsList.get(i).getComicsName() + " ID: " +
-                    comicsList.get(i).getID() + " \n");
-        }
-
-        comicsRecycler.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        comicsRecycler.setLayoutManager(layoutManager);
         ComicsAdapter comicsAdapter = new ComicsAdapter(comicsList);
         comicsRecycler.setAdapter(comicsAdapter);
     }
