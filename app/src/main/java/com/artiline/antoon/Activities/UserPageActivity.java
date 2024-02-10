@@ -219,8 +219,7 @@ public class UserPageActivity extends AppCompatActivity {
         });
     }
 
-    // TODO add desc.
-    private void updateComicsViewRecycler() {
+        private void updateComicsViewRecycler() {
         Log.i(TAG, "updateComicsViewRecycler: ");
 
         comicsList = comicsDAO.getAll();
