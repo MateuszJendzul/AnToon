@@ -81,7 +81,6 @@ public class UserPageActivity extends AppCompatActivity {
         userPageActivityLayoutDoubleArrowLeftButton = findViewById(R.id.user_page_activity_layout_double_arrow_left_button_ID);
         userPageActivityLayoutDoubleArrowRightButton = findViewById(R.id.user_page_activity_layout_double_arrow_right_button_ID);
         comicsRecycler = findViewById(R.id.user_page_activity_layout_comics_recycler_ID);
-        comicsAdapter = (ComicsAdapter) comicsRecycler.getAdapter();
 
         // load logged user data
         int loggedUserID = loginActivitySPReceiver.getInt("loggedUserID", -1);
@@ -202,28 +201,30 @@ public class UserPageActivity extends AppCompatActivity {
         userPageActivityLayoutDoubleArrowLeftButton.setOnClickListener(v -> {
             Log.i(TAG, "onClick: userPageActivityLayoutDoubleArrowLeftButton"
                     + "\nScrolling to the start of the list");
-
-            if (comicsAdapter != null && comicsAdapter.getItemCount() > 0) {
-                comicsRecycler.scrollToPosition(0);
-            }
+            scrollToFirst();
         });
 
         userPageActivityLayoutDoubleArrowRightButton.setOnClickListener(v -> {
             Log.i(TAG, "onClick: userPageActivityLayoutDoubleArrowRightButton"
                     + "\nScrolling to the end of the list");
-
-            if (comicsAdapter != null && comicsAdapter.getItemCount() > 0) {
-                comicsRecycler.scrollToPosition(comicsAdapter.getItemCount() - 1);
-
-            }
+            scrollToLast();
         });
     }
 
-        private void updateComicsViewRecycler() {
+    private void scrollToFirst() {
+        comicsRecycler.scrollToPosition(0);
+    }
+
+    private void scrollToLast() {
+        comicsRecycler.scrollToPosition(comicsAdapter.getItemCount() - 1);
+    }
+
+    private void updateComicsViewRecycler() {
         Log.i(TAG, "updateComicsViewRecycler: ");
 
         comicsList = comicsDAO.getAll();
         comicsListSize = comicsList.size();
+        comicsAdapter = new ComicsAdapter(comicsList);
 
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         comicsRecycler.setLayoutManager(layoutManager);
