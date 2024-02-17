@@ -61,6 +61,22 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="UsernameTextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:background">@color/transparent</item>
+        <item name="android:fontFamily">@font/komtxtb_sans</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/darker_text_color</item>
+        <item name="singleLine">true</item>
+        <item name="android:shadowColor">@color/transparent</item>
+        <item name="android:shadowDx">22</item>
+        <item name="android:shadowRadius">1</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="KalamTextAppearance" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">@font/kalam_regular</item>
     </style>

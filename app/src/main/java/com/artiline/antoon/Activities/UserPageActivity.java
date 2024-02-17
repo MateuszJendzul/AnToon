@@ -55,8 +55,7 @@ public class UserPageActivity extends AppCompatActivity {
     UserDAO userDAO;
     ComicsDAO comicsDAO;
     List<Comics> comicsList;
-    LinearLayoutManager layoutManager;
-    int comicsListSize = 0;
+    LinearLayoutManager comicsLayoutManager;
     User user;
 
     @Override
@@ -89,29 +88,23 @@ public class UserPageActivity extends AppCompatActivity {
         user = userDAO.getAll().get(loggedUserID);
         mainPageActivityLayoutUserNameText.setText(user.getName());
 
-        // update user comics list
-        updateComicsViewRecycler();
-
         // load previously selected (or default) user font
         changeFont(user.getFont());
         mainPageActivitySP.edit().putBoolean(LOGGED_ON_BOOL_EXTRA, true).apply();
         Log.d(TAG, "putBoolean(LOGGED_ON_BOOL_EXTRA, true)");
 
+        // update user comics list
+        updateComicsViewRecycler();
+        // add
+        createAddComicsObject();
+        overrideBackButton();
+
         mainPageActivityLayoutMenuButton.setOnClickListener(mainPageActivityLayoutMenuButtonView -> {
             Log.i(TAG, "onClick: mainPageActivityLayoutMenuButton");
             PopupMenu popupMenu = new PopupMenu(UserPageActivity.this, mainPageActivityLayoutMenuButtonView);
             popupMenu.getMenuInflater().inflate(R.menu.user_pop_up_menu, popupMenu.getMenu());
-
-            // used to set all menu item fonts by applyFontToMenuItem(MenuItem mi) method
             Menu userPopUpMenu = popupMenu.getMenu();
-            Log.d(TAG, "Menu userPopUpMenu: applying fonts to menu items");
-            for (int i = 0; i < userPopUpMenu.size(); i++) {
-                // sets current menu item 'mi' value as menu item number 'i'
-                // representing current loop iteration
-                MenuItem mi = userPopUpMenu.getItem(i);
-                // calls for method, passing current menu item 'mi'
-                applyFontToMenuItem(mi);
-            }
+            applyFontToAllMenuItems(userPopUpMenu);
 
             popupMenu.setOnMenuItemClickListener(popupMenuItemView -> {
                 Log.i(TAG, "onClick: popupMenu");
@@ -169,33 +162,9 @@ public class UserPageActivity extends AppCompatActivity {
             popupMenu.show();
         });
 
-        // overrides default phone back button
-        // before closing activity, sends boolean SP value telling StartActivity that user logged out
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                Log.i(TAG, "handleOnBackPressed: ");
-                // set loggedOn value to false, used in StartActivity to launch activity
-                mainPageActivitySP.edit().putBoolean(LOGGED_ON_BOOL_EXTRA, false).apply();
-                Log.d(TAG, "putBoolean(LOGGED_ON_BOOL_EXTRA, false)");
-                finish();
-            }
-        };
-        getOnBackPressedDispatcher().addCallback(this, callback);
-
         userPageActivityLayoutAddButton.setOnClickListener(v -> {
             Log.i(TAG, "onClick: userPageActivityLayoutAddButton");
-
-            Comics newComics = new Comics();
-            newComics.setComicsName("comicsName");
-            newComics.setComicsPicture(R.drawable.default_comics_pic_1);
-            newComics.setWebLink("webLink");
-            newComics.setRating(0);
-            newComics.setAtChapter(0);
-            newComics.setNewestChapter(0);
-            Log.i(TAG, "COMIC: " + newComics.getComicsName());
-            comicsDAO.insert(newComics);
-            updateComicsViewRecycler();
+            createNewComics();
         });
 
         userPageActivityLayoutDoubleArrowLeftButton.setOnClickListener(v -> {
@@ -211,25 +180,96 @@ public class UserPageActivity extends AppCompatActivity {
         });
     }
 
+    private void createNewComics() {
+        Comics newComics = new Comics();
+        newComics.setComicsName("comicsName");
+        newComics.setComicsPicture(R.drawable.default_comics_pic_1);
+        newComics.setWebLink("webLink");
+        newComics.setRating(0);
+        newComics.setAtChapter(0);
+        newComics.setNewestChapter(0);
+        Log.i(TAG, "COMIC: " + newComics.getComicsName());
+        comicsDAO.insert(newComics);
+        comicsList = comicsDAO.getAll();
+    }
+
+    private void createAddComicsObject() {
+        Comics newComics = new Comics();
+        newComics.setComicsName("ADD NEW");
+        newComics.setComicsPicture(R.drawable.ic_add);
+        comicsDAO.insert(newComics);
+        comicsList = comicsDAO.getAll();
+    }
+
+    private void updateAddComicsObjectPosition(List<Comics> comicsList) {
+        Log.i(TAG, "updateAddComicsObjectPosition: ");
+        int tempPosition;
+
+        for (int i = 0; i < comicsList.size() - 1; i++) {
+            Log.d(TAG, "Searching for user ID 0");
+            if (comicsList.get(i).getID() == 0) {
+                Log.d(TAG, "User ID 0 found");
+                int objectPosition = i;
+                int lastItemIndex = comicsList.size() - 1;
+                // change positions of found object with last object on the list
+                comicsList.indexOf(lastItemIndex);
+                comicsList.
+                break;
+            }
+        }
+
+    }
+
+    /**
+     * Jumps to first object of the list displayed in the Recycler view.
+     */
     private void scrollToFirst() {
         comicsRecycler.scrollToPosition(0);
     }
 
+    /**
+     * Jumps to last object of the list displayed in the Recycler view.
+     */
     private void scrollToLast() {
         comicsRecycler.scrollToPosition(comicsAdapter.getItemCount() - 1);
     }
 
+    /**
+     * Used to update comicsRecycler RecyclerView.
+     * Loads objects from the DAO comics list and assigns it to the comicsList,
+     * creates new comicsAdapter adapter instance using ComicsAdapter.class default constructor,
+     * creates new comicsLayoutManager layout instance with set properties,
+     * uses created comicsAdapter to set adapter of comicsRecycler,
+     * uses created comicsLayoutManager to set layout of comicsRecycler.
+     */
     private void updateComicsViewRecycler() {
         Log.i(TAG, "updateComicsViewRecycler: ");
 
         comicsList = comicsDAO.getAll();
-        comicsListSize = comicsList.size();
         comicsAdapter = new ComicsAdapter(comicsList);
 
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        comicsRecycler.setLayoutManager(layoutManager);
-        ComicsAdapter comicsAdapter = new ComicsAdapter(comicsList);
+        comicsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        comicsRecycler.setLayoutManager(comicsLayoutManager);
         comicsRecycler.setAdapter(comicsAdapter);
+    }
+
+    // used to set all menu item fonts by applyFontToMenuItem(MenuItem mi) method //TODO
+
+    /**
+     * Used to change fonts of all items of the provided menu.
+     * Iterates thru all menu items of the menu list and applies new font to these using
+     * applyFontToMenuItem(menuItem) function.
+     *
+     * @param menu menu of which fonts will change
+     */
+    private void applyFontToAllMenuItems(Menu menu) {
+        MenuItem mi;
+        for (int i = 0; i < menu.size(); i++) {
+            // reassigns current menu item 'mi' with next item from the 'menu' list
+            mi = menu.getItem(i);
+            // calls for method, passing current menu item 'mi' as argument
+            applyFontToMenuItem(mi);
+        }
     }
 
     /**
@@ -325,5 +365,23 @@ public class UserPageActivity extends AppCompatActivity {
 
         Log.d(TAG, "return typeface with: " + user.getFont() + " font");
         return typeface;
+    }
+
+    /**
+     * Overrides default phone back button,
+     * before closing activity, sends boolean SP value telling StartActivity that user logged out
+     */
+    private void overrideBackButton() {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                Log.i(TAG, "handleOnBackPressed: ");
+                // set loggedOn value to false, used in StartActivity to launch activity
+                mainPageActivitySP.edit().putBoolean(LOGGED_ON_BOOL_EXTRA, false).apply();
+                Log.d(TAG, "putBoolean(LOGGED_ON_BOOL_EXTRA, false)");
+                finish();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, callback);
     }
 }
