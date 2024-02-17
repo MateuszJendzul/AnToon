@@ -35,7 +35,6 @@ public class ComicsAdapter extends RecyclerView.Adapter<ComicsViewHolder> {
         int targetWidth = (int) context.getResources().getDimension(R.dimen.comicsCardViewWidth);
         int targetHeight = (int) context.getResources().getDimension(R.dimen.comicsCardViewHeight);
 
-
         // Bind your data to the CardView elements here
         Picasso.get().load(currentComics.getComicsPicture())
                 .resize(targetWidth, targetHeight)

@@ -23,9 +23,12 @@
 
     <TextView
         android:id="@+id/user_page_activity_layout_user_name_text_ID"
-        style="@style/MediumTextAppearance"
-        android:layout_marginTop="80dp"
+        style="@style/UsernameTextAppearance"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginTop="8dp"
         android:text="user_name"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
