@@ -41,7 +41,8 @@ public class UserPageActivity extends AppCompatActivity {
     // declare and initialize name strings
     public static final String MAIN_PAGE_ACTIVITY_EXTRA = "mainPageActivityExtra";
     public static final String LOGGED_ON_BOOL_EXTRA = "loggedOn";
-    // TODO created recently, create list for user to hold currently viewed series
+    public static final String COMICS_ADD_CARD_CREATED = "comicsAddCardCreated";
+    boolean comicsAddCardCreated;
 
     // declare layout objects
     TextView mainPageActivityLayoutUserNameText;
@@ -81,9 +82,12 @@ public class UserPageActivity extends AppCompatActivity {
         userPageActivityLayoutDoubleArrowRightButton = findViewById(R.id.user_page_activity_layout_double_arrow_right_button_ID);
         comicsRecycler = findViewById(R.id.user_page_activity_layout_comics_recycler_ID);
 
-        // load logged user data
+        // initialize variables
+        comicsAddCardCreated = mainPageActivitySPReceiver.getBoolean(COMICS_ADD_CARD_CREATED, false);
         int loggedUserID = loginActivitySPReceiver.getInt("loggedUserID", -1);
-        Log.d(TAG, "getInt(\"loggedUserID\", -1): " + loggedUserID);
+
+        // load logged user data
+        Log.d(TAG, "LOGGED USER ID: " + loggedUserID);
         // set current user object as object from DAO
         user = userDAO.getAll().get(loggedUserID);
         mainPageActivityLayoutUserNameText.setText(user.getName());
@@ -95,10 +99,12 @@ public class UserPageActivity extends AppCompatActivity {
 
         // update user comics list
         updateComicsViewRecycler();
-        // add
-        createAddComicsObject();
+        // add GGGGGGGGGG
+        createAddComicsCard();
+        // GGGGGGGGGGGGGG
         overrideBackButton();
 
+        //TODO 
         mainPageActivityLayoutMenuButton.setOnClickListener(mainPageActivityLayoutMenuButtonView -> {
             Log.i(TAG, "onClick: mainPageActivityLayoutMenuButton");
             PopupMenu popupMenu = new PopupMenu(UserPageActivity.this, mainPageActivityLayoutMenuButtonView);
@@ -190,34 +196,18 @@ public class UserPageActivity extends AppCompatActivity {
         newComics.setNewestChapter(0);
         Log.i(TAG, "COMIC: " + newComics.getComicsName());
         comicsDAO.insert(newComics);
-        comicsList = comicsDAO.getAll();
+        updateComicsViewRecycler();
     }
 
-    private void createAddComicsObject() {
-        Comics newComics = new Comics();
-        newComics.setComicsName("ADD NEW");
-        newComics.setComicsPicture(R.drawable.ic_add);
-        comicsDAO.insert(newComics);
-        comicsList = comicsDAO.getAll();
-    }
-
-    private void updateAddComicsObjectPosition(List<Comics> comicsList) {
-        Log.i(TAG, "updateAddComicsObjectPosition: ");
-        int tempPosition;
-
-        for (int i = 0; i < comicsList.size() - 1; i++) {
-            Log.d(TAG, "Searching for user ID 0");
-            if (comicsList.get(i).getID() == 0) {
-                Log.d(TAG, "User ID 0 found");
-                int objectPosition = i;
-                int lastItemIndex = comicsList.size() - 1;
-                // change positions of found object with last object on the list
-                comicsList.indexOf(lastItemIndex);
-                comicsList.
-                break;
-            }
+    private void createAddComicsCard() {
+        if (!comicsAddCardCreated) {
+            Comics newComics = new Comics();
+            newComics.setComicsName("ADD NEW");
+            newComics.setComicsPicture(R.drawable.add_image);
+            comicsDAO.insert(newComics);
+            updateComicsViewRecycler();
+            mainPageActivitySP.edit().putBoolean(COMICS_ADD_CARD_CREATED, true).apply();
         }
-
     }
 
     /**
@@ -232,6 +222,29 @@ public class UserPageActivity extends AppCompatActivity {
      */
     private void scrollToLast() {
         comicsRecycler.scrollToPosition(comicsAdapter.getItemCount() - 1);
+    }
+
+    private void updateAddComicsObjectPosition() {
+        Log.i(TAG, "updateAddComicsObjectPosition: ");
+
+        for (int i = 0; i < comicsList.size() - 1; i++) {
+            // DAO PrimaryKey auto generation starts from index 1
+            Log.d(TAG, "Searching for comics ID: 1");
+            if (comicsList.get(i).getID() == 1) {
+                Log.d(TAG, "Comics ID: 1 FOUND");
+                Comics firstComics = comicsList.get(i);
+                Comics lastComics = comicsList.get(comicsList.size() - 1);
+
+                // change positions of found object with last object on the list
+                comicsList.remove(i);
+                comicsList.remove(comicsList.size() - 1);
+
+                //TODO make function in DAO to add object into a specific index of list
+                comicsList.add(lastComics);
+                comicsList.add(i, firstComics);
+                break;
+            }
+        }
     }
 
     /**
@@ -251,6 +264,7 @@ public class UserPageActivity extends AppCompatActivity {
         comicsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         comicsRecycler.setLayoutManager(comicsLayoutManager);
         comicsRecycler.setAdapter(comicsAdapter);
+        updateAddComicsObjectPosition();
     }
 
     // used to set all menu item fonts by applyFontToMenuItem(MenuItem mi) method //TODO

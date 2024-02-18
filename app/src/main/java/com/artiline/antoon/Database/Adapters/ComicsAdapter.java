@@ -57,7 +57,6 @@ public class ComicsAdapter extends RecyclerView.Adapter<ComicsViewHolder> {
 
     @Override
     public int getItemCount() {
-        Log.i(TAG, "getItemCount: ");
         return comicsList.size();
     }
 }
