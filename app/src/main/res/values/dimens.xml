@@ -6,7 +6,6 @@
     <dimen name="SmallButtonWidth">60dp</dimen>
     <dimen name="toolbarHeight">60dp</dimen>
     <dimen name="comicsCardViewHeight">220dp</dimen>
-    <dimen name="comicsCardOnlyImageViewHeight">240dp</dimen>
     <dimen name="comicsCardViewWidth">140dp</dimen>
     <dimen name="iccDoubleArrowWidth">40dp</dimen>
     <dimen name="iccDoubleArrowHeight">60dp</dimen>

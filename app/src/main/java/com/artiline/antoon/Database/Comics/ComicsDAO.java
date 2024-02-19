@@ -26,4 +26,5 @@ public interface ComicsDAO {
 
     @Delete
     void deleteComics(Comics comics);
+
 }
