@@ -57,6 +57,7 @@ public class UserPageActivity extends AppCompatActivity {
     ComicsDAO comicsDAO;
     List<Comics> comicsList;
     LinearLayoutManager comicsLayoutManager;
+    Comics comicsTempObject;
     User user;
 
     @Override
@@ -100,7 +101,7 @@ public class UserPageActivity extends AppCompatActivity {
         // update user comics list
         updateComicsViewRecycler();
         // add GGGGGGGGGG
-        createAddComicsCard();
+        createComicsAddCard();
         // GGGGGGGGGGGGGG
         overrideBackButton();
 
@@ -188,7 +189,7 @@ public class UserPageActivity extends AppCompatActivity {
 
     private void createNewComics() {
         Comics newComics = new Comics();
-        newComics.setComicsName("comicsName");
+        newComics.setComicsName("New Comics");
         newComics.setComicsPicture(R.drawable.default_comics_pic_1);
         newComics.setWebLink("webLink");
         newComics.setRating(0);
@@ -199,10 +200,10 @@ public class UserPageActivity extends AppCompatActivity {
         updateComicsViewRecycler();
     }
 
-    private void createAddComicsCard() {
+    private void createComicsAddCard() {
         if (!comicsAddCardCreated) {
             Comics newComics = new Comics();
-            newComics.setComicsName("ADD NEW");
+            newComics.setComicsName("ADD");
             newComics.setComicsPicture(R.drawable.add_image);
             comicsDAO.insert(newComics);
             updateComicsViewRecycler();
@@ -224,25 +225,26 @@ public class UserPageActivity extends AppCompatActivity {
         comicsRecycler.scrollToPosition(comicsAdapter.getItemCount() - 1);
     }
 
-    private void updateAddComicsObjectPosition() {
+    /**
+     * Changes position of "ADD" card of user comics list, to ensure that its always displayed as
+     * last on the list view on the recycler.
+     * Checks if ("ADD" card ID should always be set to '1') "ADD" card ID is present on the list,
+     * deletes it, and then adds it again.
+     */
+    private void updateComicsAddCardPosition() {
         Log.i(TAG, "updateAddComicsObjectPosition: ");
 
-        for (int i = 0; i < comicsList.size() - 1; i++) {
-            // DAO PrimaryKey auto generation starts from index 1
-            Log.d(TAG, "Searching for comics ID: 1");
-            if (comicsList.get(i).getID() == 1) {
-                Log.d(TAG, "Comics ID: 1 FOUND");
-                Comics firstComics = comicsList.get(i);
-                Comics lastComics = comicsList.get(comicsList.size() - 1);
-
-                // change positions of found object with last object on the list
-                comicsList.remove(i);
-                comicsList.remove(comicsList.size() - 1);
-
-                //TODO make function in DAO to add object into a specific index of list
-                comicsList.add(lastComics);
-                comicsList.add(i, firstComics);
-                break;
+        if (comicsList.get(comicsList.size() - 1).getID() != 1) {
+            for (int i = 0; i < comicsList.size() - 1; i++) {
+                // DAO PrimaryKey auto generation starts from index 1
+                Log.d(TAG, "Searching for comics ID: 1");
+                if (comicsList.get(i).getID() == 1) {
+                    Log.d(TAG, "Comics ID: 1 FOUND");
+                    comicsTempObject = comicsList.get(i);
+                    comicsList.remove(i);
+                    comicsList.add(comicsTempObject);
+                    break;
+                }
             }
         }
     }
@@ -264,7 +266,7 @@ public class UserPageActivity extends AppCompatActivity {
         comicsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         comicsRecycler.setLayoutManager(comicsLayoutManager);
         comicsRecycler.setAdapter(comicsAdapter);
-        updateAddComicsObjectPosition();
+        updateComicsAddCardPosition();
     }
 
     // used to set all menu item fonts by applyFontToMenuItem(MenuItem mi) method //TODO
