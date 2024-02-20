@@ -5,8 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -32,10 +30,12 @@ public class ComicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         this.comicsList = comicsList;
     }
 
+    // Return different view types based on your condition
     @Override
     public int getItemViewType(int position) {
-        // Return different view types based on your condition
-        if (position == (comicsList.size() - 1)) {
+        // If position of currently processed (viewed) object equals size of comicsList
+        // (position points to the last place on the list)
+        if (position == (comicsList.size() - 1) && !comicsList.isEmpty()) {
             return VIEW_TYPE_IMAGE_ONLY;
         } else {
             return VIEW_TYPE_NORMAL;
@@ -46,18 +46,14 @@ public class ComicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Log.i(TAG, "onBindViewHolder: ");
         Comics currentComics = comicsList.get(position);
-        Context context = holder.itemView.getContext();
-
-        // Retrieve dimensions from dimens.xml
-        int targetWidth = (int) context.getResources().getDimension(R.dimen.comicsCardViewWidth);
-        int targetHeight = (int) context.getResources().getDimension(R.dimen.comicsCardViewHeight);
-        int targetOnlyImageHeight = (int) context.getResources().getDimension(R.dimen.comicsCardOnlyImageViewHeight);
 
         if (holder instanceof ComicsViewHolder) {
             // Bind data to normal views
             comicsViewHolder = (ComicsViewHolder) holder;
+            // Set image of currently processed (viewed) object using Picasso library
+            // (added dependency to build.gradle scripts)
             Picasso.get().load(currentComics.getComicsPicture())
-                    .resize(targetWidth, targetHeight)
+                    .fit()
                     .centerCrop()
                     .placeholder(R.drawable.default_comics_pic)
                     .error(R.drawable.antoon_wallpaper)
@@ -71,7 +67,7 @@ public class ComicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             comicsOnlyImageViewHolder = (ComicsOnlyImageViewHolder) holder;
             // Set image only data using Picasso library
             Picasso.get().load(currentComics.getComicsPicture())
-                    .resize(targetWidth, targetOnlyImageHeight)
+                    .fit()
                     .centerCrop()
                     .placeholder(R.drawable.default_comics_pic)
                     .error(R.drawable.antoon_wallpaper)
@@ -81,17 +77,21 @@ public class ComicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @NonNull
     @Override
-    public ComicsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.i(TAG, "onCreateViewHolder: ");
         View view;
+        // If getItemViewType() return value of currently processed (viewed) object equals
+        // VIEW_TYPE_IMAGE_ONLY (which equals integer 1) inflate layout of comics_card_view_image_only_layout
+        // which which results that this object will be displayed only be its image (as set in layout)
         if (viewType == VIEW_TYPE_IMAGE_ONLY) {
             view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.comics_card_view_image_only, parent, false);
+                    .inflate(R.layout.comics_card_view_image_only_layout, parent, false);
+            return new ComicsOnlyImageViewHolder(view);
         } else {
             view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.comics_card_view, parent, false);
+                    .inflate(R.layout.comics_card_view_layout, parent, false);
+            return new ComicsViewHolder(view);
         }
-        return new ComicsViewHolder(view);
     }
 
     @Override

@@ -203,7 +203,6 @@ public class UserPageActivity extends AppCompatActivity {
     private void createComicsAddCard() {
         if (!comicsAddCardCreated) {
             Comics newComics = new Comics();
-            newComics.setComicsName("ADD");
             newComics.setComicsPicture(R.drawable.add_image);
             comicsDAO.insert(newComics);
             updateComicsViewRecycler();
@@ -232,18 +231,20 @@ public class UserPageActivity extends AppCompatActivity {
      * deletes it, and then adds it again.
      */
     private void updateComicsAddCardPosition() {
-        Log.i(TAG, "updateAddComicsObjectPosition: ");
+        Log.i(TAG, "updateComicsAddCardPosition: ");
 
-        if (comicsList.get(comicsList.size() - 1).getID() != 1) {
-            for (int i = 0; i < comicsList.size() - 1; i++) {
-                // DAO PrimaryKey auto generation starts from index 1
-                Log.d(TAG, "Searching for comics ID: 1");
-                if (comicsList.get(i).getID() == 1) {
-                    Log.d(TAG, "Comics ID: 1 FOUND");
-                    comicsTempObject = comicsList.get(i);
-                    comicsList.remove(i);
-                    comicsList.add(comicsTempObject);
-                    break;
+        if(comicsList.size() > 0) {
+            if (comicsList.get(comicsList.size() - 1).getID() != 1) {
+                for (int i = 0; i < comicsList.size() - 1; i++) {
+                    // DAO PrimaryKey auto generation starts from index 1
+                    Log.d(TAG, "Searching for comics ID: 1");
+                    if (comicsList.get(i).getID() == 1) {
+                        Log.d(TAG, "Comics ID: 1 FOUND");
+                        comicsTempObject = comicsList.get(i);
+                        comicsList.remove(i);
+                        comicsList.add(comicsTempObject);
+                        break;
+                    }
                 }
             }
         }
