@@ -3,12 +3,16 @@ package com.artiline.antoon.Database.Adapters;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
+import com.artiline.antoon.Database.ComicsClickListener;
 import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.artiline.antoon.Database.Models.Comics;
@@ -24,10 +28,12 @@ public class ComicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     List<Comics> comicsList;
     ComicsViewHolder comicsViewHolder;
     ComicsOnlyImageViewHolder comicsOnlyImageViewHolder;
+    ComicsClickListener listener;
 
-    public ComicsAdapter(List<Comics> comicsList) {
+    public ComicsAdapter(List<Comics> comicsList, ComicsClickListener listener) {
         Log.i(TAG, "ComicsAdapter: ");
         this.comicsList = comicsList;
+        this.listener = listener;
     }
 
     // Return different view types based on your condition
@@ -62,6 +68,21 @@ public class ComicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             comicsViewHolder.newestChapter.setText(String.valueOf(currentComics.getNewestChapter()));
             comicsViewHolder.comicsName.setText(currentComics.getComicsName());
 
+            ((ComicsViewHolder) holder).comicsCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(comicsList.get(holder.getAdapterPosition()));
+                }
+            });
+
+            ((ComicsViewHolder) holder).comicsCardView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onLongClick(comicsList.get(holder.getAdapterPosition()), ((ComicsViewHolder) holder).comicsCardView);
+                    return true;
+                }
+            });
+
         } else if (holder instanceof ComicsOnlyImageViewHolder) {
             // Bind data to views for image only
             comicsOnlyImageViewHolder = (ComicsOnlyImageViewHolder) holder;
@@ -72,7 +93,24 @@ public class ComicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     .placeholder(R.drawable.default_comics_pic)
                     .error(R.drawable.antoon_wallpaper)
                     .into(comicsOnlyImageViewHolder.comicsPicture);
+
+            ((ComicsOnlyImageViewHolder) holder).comicsCardViewImageOnly.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onClick(comicsList.get(holder.getAdapterPosition()));
+                }
+            });
+
+            ((ComicsOnlyImageViewHolder) holder).comicsCardViewImageOnly.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    listener.onLongClick(comicsList.get(holder.getAdapterPosition()), ((ComicsOnlyImageViewHolder) holder).comicsCardViewImageOnly);
+                    return true;
+                }
+            });
         }
+
+
     }
 
     @NonNull

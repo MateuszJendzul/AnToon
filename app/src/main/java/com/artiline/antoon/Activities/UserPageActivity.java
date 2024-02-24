@@ -19,13 +19,17 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.artiline.antoon.Database.Adapters.ComicsAdapter;
 import com.artiline.antoon.Database.Comics.ComicsDAO;
 import com.artiline.antoon.Database.Comics.ComicsRoomDB;
+import com.artiline.antoon.Database.ComicsClickListener;
 import com.artiline.antoon.Database.Models.Comics;
+import com.artiline.antoon.Database.User.AddNewComics;
+import com.artiline.antoon.Database.User.ViewComics;
 import com.artiline.antoon.R;
 import com.artiline.antoon.Database.User.UserDAO;
 import com.artiline.antoon.Database.User.UserRoomDB;
@@ -57,7 +61,7 @@ public class UserPageActivity extends AppCompatActivity {
     ComicsDAO comicsDAO;
     List<Comics> comicsList;
     LinearLayoutManager comicsLayoutManager;
-    Comics comicsTempObject;
+    Comics comicsTempObject, clickListenerComics;
     User user;
 
     @Override
@@ -233,7 +237,7 @@ public class UserPageActivity extends AppCompatActivity {
     private void updateComicsAddCardPosition() {
         Log.i(TAG, "updateComicsAddCardPosition: ");
 
-        if(comicsList.size() > 0) {
+        if (comicsList.size() > 0) {
             if (comicsList.get(comicsList.size() - 1).getID() != 1) {
                 for (int i = 0; i < comicsList.size() - 1; i++) {
                     // DAO PrimaryKey auto generation starts from index 1
@@ -262,7 +266,7 @@ public class UserPageActivity extends AppCompatActivity {
         Log.i(TAG, "updateComicsViewRecycler: ");
 
         comicsList = comicsDAO.getAll();
-        comicsAdapter = new ComicsAdapter(comicsList);
+        comicsAdapter = new ComicsAdapter(comicsList, comicsClickListener);
 
         comicsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         comicsRecycler.setLayoutManager(comicsLayoutManager);
@@ -400,5 +404,50 @@ public class UserPageActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
+    // TODO
+    private final ComicsClickListener comicsClickListener = new ComicsClickListener() {
+        @Override
+        public void onClick(Comics comics) {
+            Log.d(TAG, "onClick: comicsClickListener");
+            Intent comicsClickListenerIntent;
+
+            Toast.makeText(UserPageActivity.this, "CLICK", Toast.LENGTH_SHORT).show();
+//            if (comicsList.get(comicsList.size() - 1).getID() == 1) {
+//                comicsClickListenerIntent = new Intent(UserPageActivity.this, AddNewComics.class);
+//                startActivity(comicsClickListenerIntent);
+//
+//            } else {
+//                comicsClickListenerIntent = new Intent(UserPageActivity.this, ViewComics.class);
+//                startActivity(comicsClickListenerIntent);
+//            }
+        }
+
+        @Override
+        public void onLongClick(Comics comics, CardView cardView) {
+            Log.d(TAG, "onLongClick: comicsClickListener");
+            clickListenerComics = comics;
+            // TODO popup doesn't show
+            showPopUp(comics, cardView);
+        }
+    };
+
+    /**
+     * Creates new PopupMenu to display after user calls it in RecyclerView.
+     * Menu has option to delete selected bike.
+     *
+     * @param cardView pass menu cardView here.
+     */
+    private void showPopUp(Comics comics, CardView cardView) {
+        Log.d(TAG, "showPopUp");
+        PopupMenu popupMenu = new PopupMenu(UserPageActivity.this, cardView);
+        popupMenu.getMenuInflater().inflate(R.menu.popup_comics_menu, popupMenu.getMenu());
+
+        int selectedComics = cardView.getId();
+
+        if (selectedComics == R.id.popup_comics_menu_delete_comics_ID) {
+            comicsList.remove(comics);
+        }
     }
 }

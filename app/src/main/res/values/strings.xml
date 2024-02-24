@@ -24,6 +24,8 @@
     <string name="comicsNameString">Comics Name</string>
     <string name="newestChapter">99</string>
     <string name="atChapter">0</string>
+    <string name="set_comics_image_string">Set Comics Image</string>
+    <string name="set_comics_name_string">Set Comics Name</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -61,4 +63,6 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="delete_comics_string">Delete Comics</string>
+
 </resources>
