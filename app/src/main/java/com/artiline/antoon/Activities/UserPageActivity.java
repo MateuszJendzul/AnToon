@@ -421,7 +421,7 @@ public class UserPageActivity extends AppCompatActivity {
 //            } else {
 //                comicsClickListenerIntent = new Intent(UserPageActivity.this, ViewComics.class);
 //                startActivity(comicsClickListenerIntent);
-//            }
+//            }.
         }
 
         @Override
