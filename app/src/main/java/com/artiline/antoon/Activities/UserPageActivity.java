@@ -191,6 +191,7 @@ public class UserPageActivity extends AppCompatActivity {
         });
     }
 
+    // TODO
     private void createNewComics() {
         Comics newComics = new Comics();
         newComics.setComicsName("New Comics");
@@ -204,6 +205,7 @@ public class UserPageActivity extends AppCompatActivity {
         updateComicsViewRecycler();
     }
 
+    // TODO
     private void createComicsAddCard() {
         if (!comicsAddCardCreated) {
             Comics newComics = new Comics();
@@ -273,8 +275,6 @@ public class UserPageActivity extends AppCompatActivity {
         comicsRecycler.setAdapter(comicsAdapter);
         updateComicsAddCardPosition();
     }
-
-    // used to set all menu item fonts by applyFontToMenuItem(MenuItem mi) method //TODO
 
     /**
      * Used to change fonts of all items of the provided menu.
