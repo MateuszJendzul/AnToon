@@ -61,7 +61,7 @@ public class UserPageActivity extends AppCompatActivity {
     ComicsDAO comicsDAO;
     List<Comics> comicsList;
     LinearLayoutManager comicsLayoutManager;
-    Comics comicsTempObject, clickListenerComics;
+    Comics comicsTempObject;
     User user;
 
     @Override
@@ -427,27 +427,34 @@ public class UserPageActivity extends AppCompatActivity {
         @Override
         public void onLongClick(Comics comics, CardView cardView) {
             Log.d(TAG, "onLongClick: comicsClickListener");
-            clickListenerComics = comics;
-            // TODO popup doesn't show
             showPopUp(comics, cardView);
         }
     };
 
     /**
-     * Creates new PopupMenu to display after user calls it in RecyclerView.
-     * Menu has option to delete selected bike.
+     * Creates new PopupMenu to display it after user long clicks on item in comicsRecycler RecyclerView.
+     * If user selects one of options:
+     * - delete: to delete selected comics from DAO.
      *
-     * @param cardView pass menu cardView here.
+     * @param cardView pass CardView layout to be displayed.
      */
     private void showPopUp(Comics comics, CardView cardView) {
         Log.d(TAG, "showPopUp");
         PopupMenu popupMenu = new PopupMenu(UserPageActivity.this, cardView);
         popupMenu.getMenuInflater().inflate(R.menu.popup_comics_menu, popupMenu.getMenu());
 
-        int selectedComics = cardView.getId();
+        popupMenu.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.popup_comics_menu_delete_comics_ID) {
+                comicsDAO.deleteComics(comics);
+                updateComicsViewRecycler();
+                return true;
 
-        if (selectedComics == R.id.popup_comics_menu_delete_comics_ID) {
-            comicsList.remove(comics);
-        }
+            } else {
+                return false;
+            }
+        });
+
+        // call show function to summon selected menu
+        popupMenu.show();
     }
 }

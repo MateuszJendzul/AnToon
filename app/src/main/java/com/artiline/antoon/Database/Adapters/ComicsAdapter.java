@@ -100,14 +100,6 @@ public class ComicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     listener.onClick(comicsList.get(holder.getAdapterPosition()));
                 }
             });
-
-            ((ComicsOnlyImageViewHolder) holder).comicsCardViewImageOnly.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    listener.onLongClick(comicsList.get(holder.getAdapterPosition()), ((ComicsOnlyImageViewHolder) holder).comicsCardViewImageOnly);
-                    return true;
-                }
-            });
         }
 
 
