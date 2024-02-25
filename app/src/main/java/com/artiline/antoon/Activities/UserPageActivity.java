@@ -409,13 +409,13 @@ public class UserPageActivity extends AppCompatActivity {
 
             Toast.makeText(UserPageActivity.this, "CLICK", Toast.LENGTH_SHORT).show();
             if (comicsList.get(comicsList.size() - 1).getID() == 1) {
-//                comicsClickListenerIntent = new Intent(UserPageActivity.this, AddNewComics.class);
-//                startActivity(comicsClickListenerIntent);
+                comicsClickListenerIntent = new Intent(UserPageActivity.this, AddNewComics.class);
+                startActivity(comicsClickListenerIntent);
                 createNewComics();
 
             } else {
-//                comicsClickListenerIntent = new Intent(UserPageActivity.this, ViewComics.class);
-//                startActivity(comicsClickListenerIntent);
+                comicsClickListenerIntent = new Intent(UserPageActivity.this, ViewComics.class);
+                startActivity(comicsClickListenerIntent);
             }
         }
 

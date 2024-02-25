@@ -28,6 +28,8 @@
         <activity android:name=".Activities.RegisterActivity" />
         <activity android:name=".Activities.LoginActivity" />
         <activity android:name=".Activities.ComicsPageActivity" />
+        <activity android:name=".Activities.AddNewComicsActivity" />
+        <activity android:name=".Activities.ViewComicsActivity" />
 
     </application>
 
