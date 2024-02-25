@@ -61,26 +61,20 @@ public class ComicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             Picasso.get().load(currentComics.getComicsPicture())
                     .fit()
                     .centerCrop()
-                    .placeholder(R.drawable.default_comics_pic)
-                    .error(R.drawable.antoon_wallpaper)
+                    .placeholder(R.drawable.comics_default_image)
+                    .error(R.drawable.comics_image_error)
                     .into(comicsViewHolder.comicsPicture);
             comicsViewHolder.atChapter.setText(String.valueOf(currentComics.getAtChapter()));
             comicsViewHolder.newestChapter.setText(String.valueOf(currentComics.getNewestChapter()));
             comicsViewHolder.comicsName.setText(currentComics.getComicsName());
 
-            ((ComicsViewHolder) holder).comicsCardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onClick(comicsList.get(holder.getAdapterPosition()));
-                }
-            });
-
-            ((ComicsViewHolder) holder).comicsCardView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    listener.onLongClick(comicsList.get(holder.getAdapterPosition()), ((ComicsViewHolder) holder).comicsCardView);
-                    return true;
-                }
+            // onClickListener
+            ((ComicsViewHolder) holder).comicsCardView.setOnClickListener(
+                    v -> listener.onClick(comicsList.get(holder.getAdapterPosition())));
+            // onLongClickListener
+            ((ComicsViewHolder) holder).comicsCardView.setOnLongClickListener(v -> {
+                listener.onLongClick(comicsList.get(holder.getAdapterPosition()), ((ComicsViewHolder) holder).comicsCardView);
+                return true;
             });
 
         } else if (holder instanceof ComicsOnlyImageViewHolder) {
@@ -90,16 +84,13 @@ public class ComicsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             Picasso.get().load(currentComics.getComicsPicture())
                     .fit()
                     .centerCrop()
-                    .placeholder(R.drawable.default_comics_pic)
-                    .error(R.drawable.antoon_wallpaper)
+                    .placeholder(R.drawable.comics_default_image)
+                    .error(R.drawable.comics_image_error)
                     .into(comicsOnlyImageViewHolder.comicsPicture);
 
-            ((ComicsOnlyImageViewHolder) holder).comicsCardViewImageOnly.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onClick(comicsList.get(holder.getAdapterPosition()));
-                }
-            });
+            // onClickListener
+            ((ComicsOnlyImageViewHolder) holder).comicsCardViewImageOnly.setOnClickListener(
+                    v -> listener.onClick(comicsList.get(holder.getAdapterPosition())));
         }
 
 

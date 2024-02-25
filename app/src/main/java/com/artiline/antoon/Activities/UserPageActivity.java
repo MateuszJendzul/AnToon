@@ -50,7 +50,7 @@ public class UserPageActivity extends AppCompatActivity {
 
     // declare layout objects
     TextView mainPageActivityLayoutUserNameText;
-    Button mainPageActivityLayoutMenuButton, userPageActivityLayoutAddButton, userPageActivityLayoutDoubleArrowLeftButton,
+    Button mainPageActivityLayoutMenuButton, userPageActivityLayoutDoubleArrowLeftButton,
             userPageActivityLayoutDoubleArrowRightButton;
     RecyclerView comicsRecycler;
 
@@ -82,7 +82,6 @@ public class UserPageActivity extends AppCompatActivity {
         // initialize layout objects
         mainPageActivityLayoutUserNameText = findViewById(R.id.user_page_activity_layout_user_name_text_ID);
         mainPageActivityLayoutMenuButton = findViewById(R.id.user_page_activity_layout_menu_button_ID);
-        userPageActivityLayoutAddButton = findViewById(R.id.user_page_activity_layout_add_button_ID);
         userPageActivityLayoutDoubleArrowLeftButton = findViewById(R.id.user_page_activity_layout_double_arrow_left_button_ID);
         userPageActivityLayoutDoubleArrowRightButton = findViewById(R.id.user_page_activity_layout_double_arrow_right_button_ID);
         comicsRecycler = findViewById(R.id.user_page_activity_layout_comics_recycler_ID);
@@ -171,11 +170,6 @@ public class UserPageActivity extends AppCompatActivity {
                 return false;
             });
             popupMenu.show();
-        });
-
-        userPageActivityLayoutAddButton.setOnClickListener(v -> {
-            Log.i(TAG, "onClick: userPageActivityLayoutAddButton");
-            createNewComics();
         });
 
         userPageActivityLayoutDoubleArrowLeftButton.setOnClickListener(v -> {
@@ -414,14 +408,15 @@ public class UserPageActivity extends AppCompatActivity {
             Intent comicsClickListenerIntent;
 
             Toast.makeText(UserPageActivity.this, "CLICK", Toast.LENGTH_SHORT).show();
-//            if (comicsList.get(comicsList.size() - 1).getID() == 1) {
+            if (comicsList.get(comicsList.size() - 1).getID() == 1) {
 //                comicsClickListenerIntent = new Intent(UserPageActivity.this, AddNewComics.class);
 //                startActivity(comicsClickListenerIntent);
-//
-//            } else {
+                createNewComics();
+
+            } else {
 //                comicsClickListenerIntent = new Intent(UserPageActivity.this, ViewComics.class);
 //                startActivity(comicsClickListenerIntent);
-//            }
+            }
         }
 
         @Override
