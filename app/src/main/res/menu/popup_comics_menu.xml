@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/popup_comics_menu_delete_comics_ID"
+        android:title="@string/delete_comics_string" />
+</menu>

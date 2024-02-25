@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/comics_card_view_image_only_layout_ID"
     android:layout_width="@dimen/comicsCardViewWidth"
     android:layout_height="wrap_content"
     android:foreground="@drawable/card_view_foreground"

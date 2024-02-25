@@ -19,13 +19,17 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.artiline.antoon.Database.Adapters.ComicsAdapter;
 import com.artiline.antoon.Database.Comics.ComicsDAO;
 import com.artiline.antoon.Database.Comics.ComicsRoomDB;
+import com.artiline.antoon.Database.ComicsClickListener;
 import com.artiline.antoon.Database.Models.Comics;
+import com.artiline.antoon.Database.User.AddNewComics;
+import com.artiline.antoon.Database.User.ViewComics;
 import com.artiline.antoon.R;
 import com.artiline.antoon.Database.User.UserDAO;
 import com.artiline.antoon.Database.User.UserRoomDB;
@@ -187,6 +191,7 @@ public class UserPageActivity extends AppCompatActivity {
         });
     }
 
+    // TODO
     private void createNewComics() {
         Comics newComics = new Comics();
         newComics.setComicsName("New Comics");
@@ -200,10 +205,10 @@ public class UserPageActivity extends AppCompatActivity {
         updateComicsViewRecycler();
     }
 
+    // TODO
     private void createComicsAddCard() {
         if (!comicsAddCardCreated) {
             Comics newComics = new Comics();
-            newComics.setComicsName("ADD");
             newComics.setComicsPicture(R.drawable.add_image);
             comicsDAO.insert(newComics);
             updateComicsViewRecycler();
@@ -232,18 +237,20 @@ public class UserPageActivity extends AppCompatActivity {
      * deletes it, and then adds it again.
      */
     private void updateComicsAddCardPosition() {
-        Log.i(TAG, "updateAddComicsObjectPosition: ");
+        Log.i(TAG, "updateComicsAddCardPosition: ");
 
-        if (comicsList.get(comicsList.size() - 1).getID() != 1) {
-            for (int i = 0; i < comicsList.size() - 1; i++) {
-                // DAO PrimaryKey auto generation starts from index 1
-                Log.d(TAG, "Searching for comics ID: 1");
-                if (comicsList.get(i).getID() == 1) {
-                    Log.d(TAG, "Comics ID: 1 FOUND");
-                    comicsTempObject = comicsList.get(i);
-                    comicsList.remove(i);
-                    comicsList.add(comicsTempObject);
-                    break;
+        if (comicsList.size() > 0) {
+            if (comicsList.get(comicsList.size() - 1).getID() != 1) {
+                for (int i = 0; i < comicsList.size() - 1; i++) {
+                    // DAO PrimaryKey auto generation starts from index 1
+                    Log.d(TAG, "Searching for comics ID: 1");
+                    if (comicsList.get(i).getID() == 1) {
+                        Log.d(TAG, "Comics ID: 1 FOUND");
+                        comicsTempObject = comicsList.get(i);
+                        comicsList.remove(i);
+                        comicsList.add(comicsTempObject);
+                        break;
+                    }
                 }
             }
         }
@@ -261,15 +268,13 @@ public class UserPageActivity extends AppCompatActivity {
         Log.i(TAG, "updateComicsViewRecycler: ");
 
         comicsList = comicsDAO.getAll();
-        comicsAdapter = new ComicsAdapter(comicsList);
+        comicsAdapter = new ComicsAdapter(comicsList, comicsClickListener);
 
         comicsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         comicsRecycler.setLayoutManager(comicsLayoutManager);
         comicsRecycler.setAdapter(comicsAdapter);
         updateComicsAddCardPosition();
     }
-
-    // used to set all menu item fonts by applyFontToMenuItem(MenuItem mi) method //TODO
 
     /**
      * Used to change fonts of all items of the provided menu.
@@ -399,5 +404,57 @@ public class UserPageActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(this, callback);
+    }
+
+    // TODO
+    private final ComicsClickListener comicsClickListener = new ComicsClickListener() {
+        @Override
+        public void onClick(Comics comics) {
+            Log.d(TAG, "onClick: comicsClickListener");
+            Intent comicsClickListenerIntent;
+
+            Toast.makeText(UserPageActivity.this, "CLICK", Toast.LENGTH_SHORT).show();
+//            if (comicsList.get(comicsList.size() - 1).getID() == 1) {
+//                comicsClickListenerIntent = new Intent(UserPageActivity.this, AddNewComics.class);
+//                startActivity(comicsClickListenerIntent);
+//
+//            } else {
+//                comicsClickListenerIntent = new Intent(UserPageActivity.this, ViewComics.class);
+//                startActivity(comicsClickListenerIntent);
+//            }
+        }
+
+        @Override
+        public void onLongClick(Comics comics, CardView cardView) {
+            Log.d(TAG, "onLongClick: comicsClickListener");
+            showPopUp(comics, cardView);
+        }
+    };
+
+    /**
+     * Creates new PopupMenu to display it after user long clicks on item in comicsRecycler RecyclerView.
+     * If user selects one of options:
+     * - delete: to delete selected comics from DAO.
+     *
+     * @param cardView pass CardView layout to be displayed.
+     */
+    private void showPopUp(Comics comics, CardView cardView) {
+        Log.d(TAG, "showPopUp");
+        PopupMenu popupMenu = new PopupMenu(UserPageActivity.this, cardView);
+        popupMenu.getMenuInflater().inflate(R.menu.popup_comics_menu, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.popup_comics_menu_delete_comics_ID) {
+                comicsDAO.deleteComics(comics);
+                updateComicsViewRecycler();
+                return true;
+
+            } else {
+                return false;
+            }
+        });
+
+        // call show function to summon selected menu
+        popupMenu.show();
     }
 }
