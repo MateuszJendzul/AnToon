@@ -90,7 +90,6 @@ public class RegisterActivity extends AppCompatActivity {
                         + " with ID of: " + userDAO.getAll().get(ID).getUserID());
                 // increment ID and put in into SP to later receive it and set it as new user ID
                 ID++;
-                Log.e(TAG, "!!!!!!!!ID = " + ID);
                 registerActivitySP.edit().putInt("ID", ID).apply();
                 // after creating user and sending its ID, starts main user page screen
                 Intent registerActivityLayoutLoginButtonIntent = new Intent(

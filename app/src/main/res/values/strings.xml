@@ -64,5 +64,7 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="delete_comics_string">Delete Comics</string>
+    <string name="type_url_address_string">Type URL Address</string>
+    <string name="register_string">Register</string>
 
 </resources>
