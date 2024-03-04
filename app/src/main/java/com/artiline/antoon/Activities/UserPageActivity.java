@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.artiline.antoon.Database.Adapters.ComicsAdapter;
 import com.artiline.antoon.Database.Comics.ComicsDAO;
+import com.artiline.antoon.Database.Comics.ComicsRepository;
 import com.artiline.antoon.Database.Comics.ComicsRoomDB;
 import com.artiline.antoon.Database.ComicsClickListener;
 import com.artiline.antoon.Database.Models.Comics;
@@ -407,7 +408,7 @@ public class UserPageActivity extends AppCompatActivity {
             Log.d(TAG, "onClick: comicsClickListener");
             Intent comicsClickListenerIntent;
 
-            if (comicsList.get(comicsList.size() - 1).getID() == 1) {
+            if (comicsList.get(comicsList.size() - 1).getID() == 1 && comics.getID() == 1) {
                 comicsClickListenerIntent = new Intent(UserPageActivity.this, AddNewComicsActivity.class);
                 startActivity(comicsClickListenerIntent);
 

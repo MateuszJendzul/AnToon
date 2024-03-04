@@ -53,17 +53,6 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/user_page_activity_layout_add_button_ID"
-        style="@style/SmallButtonAppearance"
-        android:text="add"
-        app:layout_constraintBottom_toTopOf="@+id/user_page_activity_layout_comics_recycler_ID"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.122"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.548" />
-
-    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/user_page_activity_layout_double_arrow_left_button_ID"
         android:layout_width="@dimen/iccDoubleArrowWidth"
         android:layout_height="@dimen/iccDoubleArrowHeight"
